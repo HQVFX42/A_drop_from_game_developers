@@ -1,5 +1,5 @@
-﻿# Welcome to Our Community!
-`May each drop of thought gather to form an ocean of wisdom!`
+﻿# Welcome to this Repository! :blush:
+**May each drop of thought gather to form an ocean of wisdom!**
 
 This is a place where:
 - We share our thoughts
@@ -30,7 +30,7 @@ Happy sharing and discovering! :smile:
 
 ## :droplet:Drops
 - Computer Science
-    - [?](./ComputerScience/README.md)
+    - [?](./ComputerScience/ComputerScience.md)
     
 - Languages
     - [CPP](./Languages/CPP.md)
