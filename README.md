@@ -1,5 +1,5 @@
 ﻿# Welcome to this Repository! :blush:
-**May each drop of thought gather to form an ocean of wisdom!**
+> **May each drop of thought gather to form an ocean of wisdom!**
 
 This is a place where:
 - We share our thoughts
