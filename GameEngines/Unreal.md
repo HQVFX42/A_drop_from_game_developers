@@ -1,4 +1,11 @@
-﻿# Unreal Engine의 Garbage Collection 시스템
+﻿# Sections
+- [Garbage Collection](#Unreal-Engine의-Garbage-Collection-시스템)
+- [Network](#UE-Network)
+- [String Handling](#String-Handling)
+
+---
+
+# Unreal Engine의 Garbage Collection 시스템
 
 ## 기본 원리
 
@@ -63,3 +70,28 @@
 - 상태 동기화 우선순위 설정
 
 ## Replication
+
+---
+
+# String Handling
+
+## FName
+- 콘텐츠 브라우저 에서 새 에셋 이름을 지을 때, 다이내믹 머티리얼 인스턴스의 파라미터를 변경할 때, 스켈레탈 메시에서 본에 접근할 때, 모두 FName 을 사용합니다.  
+FName 은 문자열 사용에 있어서 초경량 시스템을 제공하는데, 주어진 문자열이 재사용된다 해도 데이터 테이블에 한 번만 저장되는 것입니다. FName 은 대소문자를 구분하지 않습니다.  
+변경도 불가능하여, 조작할 수 없습니다. 이처럼 FName 의 정적인 속성과 저장 시스템 덕에 찾기나 키로 FName 에 접근하는 속도가 빠릅니다.  
+FName 서브시스템의 또다른 특징은 스트링에서 FName 변환이 해시 테이블을 사용해서 빠르다는 점입니다.
+
+## FText
+- 언리얼 엔진(UE) 에서 텍스트 현지화를 위한 주요 컴포넌트는 FText 클래스입니다.  
+이 클래스는 다음 기능을 제공하여 텍스트 현지화를 지원하므로 모든 사용자 대상 텍스트는 이 클래스를 사용해야 합니다.
+
+## FString
+- FName 이나 FText 와는 달리, FString 은 조작이 가능한 유일한 스트링 클래스입니다.  
+대소문자 변환, 부분문자열 발췌, 역순 등 사용가능한 메서드는 많습니다. 
+검색, 변경에 다른 스트링과의 비교도 가능합니다.  
+그러나 바로 그것이 FString 이 다른 불변의 스트링 클래스보다 비싸지는 이유입니다.
+
+## Encoding
+- 일반적으로 문자열 변수 리터럴을 설정할 때는 TEXT() 매크로를 사용해야 합니다.  
+TEXT() 매크로를 지정하지 않으면 리터럴은 지원되는 문자가 매우 제한되는 ANSI를 사용하여 인코딩됩니다.  
+FString에 전달되는 모든 ANSI 리터럴은 TCHAR(네이티브 유니코드 인코딩)로 변환해야 하므로 TEXT()를 사용하는 것이 더 효율적입니다.
