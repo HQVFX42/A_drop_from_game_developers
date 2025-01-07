@@ -1,4 +1,7 @@
-﻿# Welcome to this Repository! :blush:
+- 파일분할 및 파일정리 진행중...  
+![1%](https://progress-bar.xyz/1/?scale=100&title=progress&width=512&color=babaca&suffix=/100)
+
+ # Welcome to this Repository! :blush:
 > **May each drop of thought gather to form an ocean of wisdom!**
 
 This is a place where:
@@ -22,11 +25,6 @@ So, don't hesitate to contribute. Your unique experiences and viewpoints can spa
 Happy sharing and discovering! :smile:
 
 ---
-
-- 파일분할 및 파일정리 진행중...  
-![1%](https://progress-bar.xyz/1/?scale=100&title=progress&width=512&color=babaca&suffix=/100)
-
-
 
 ## :droplet:Drops
 - Computer Science
