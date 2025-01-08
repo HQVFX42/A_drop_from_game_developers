@@ -1,7 +1,7 @@
 ﻿# CPP
 - [OOP(Object-Oriented Programming)](#OOP)
 - [Class](#Class)
-- [Constructor & Destructor](#Constructor-&-Destructor)
+- [Constructor & Destructor](#Constructor--Destructor)
 - [auto](#auto)
 - [Pointer](#Pointer)
 - [Reference vs Copy](#Reference-vs-Copy)
