@@ -159,40 +159,27 @@
 <br> 위 코드의 출력 값은 아래와 같다
 
 ```cpp
-    Constructor
-    Copy
-    Copy
-    Move
-    Destructor
-    Copy
-    ---
-    Constructor
-    Constructor
-    Copy
-    ---
-    Destructor
-    Destructor
-    Destructor
-    Destructor
-    Destructor
-    Destructor
-    Destructor
+    Constructor // A a1(7);에서 a1 객체 생성
+    Copy        // A a2(a1);에서 a1을 a2로 복사
+    Copy        // F1(a2)에서 a2를 함수 매개변수로 복사
+    Move        // F1의 반환값을 a3로 이동
+    Destructor  // F1 함수의 지역 변수(매개변수) 소멸
+    Copy        // F2(a3)의 반환값을 a4로 복사
+    ---         // 구분선 출력
+    Constructor // B b;에서 B의 기본 생성자 호출 (A의 생성자도 호출됨)
+    Constructor // B b2 = b;에서 B의 암시적 복사 생성자 호출 (A의 생성자도 호출됨)
+    Copy        // A a5 = b;에서 B를 A로 변환 후 복사
+    ---         // 구분선 출력
+    Destructor  // a5
+    Destructor  // b2
+    Destructor  // b
+    Destructor  // a4
+    Destructor  // a3
+    Destructor  // a2
+    Destructor  // a1
 ```
-각 줄에 대한 설명 :
-1. Constructor: A a1(7);에서 a1 객체 생성
-1. Copy: A a2(a1);에서 a1을 a2로 복사
-1. Copy: F1(a2)에서 a2를 함수 매개변수로 복사
-1. Move: F1의 반환값을 a3로 이동
-1. Destructor: F1 함수의 지역 변수(매개변수) 소멸
-1. Copy: F2(a3)의 반환값을 a4로 복사
-1. ---: 구분선 출력
-1. Constructor: B b;에서 B의 기본 생성자 호출 (A의 생성자도 호출됨)
-1. Constructor: B b2 = b;에서 B의 암시적 복사 생성자 호출 (A의 생성자도 호출됨)
-1. Copy: A a5 = b;에서 B를 A로 변환 후 복사
-1. ---: 구분선 출력
-1. 12-18. Destructor x 7: a5, b2, b, a4, a3, a2, a1 순으로 소멸
 
-주요 포인트:
+<br> 주요 포인트:
 - F1은 값으로 전달받고 반환하므로, 복사 후 이동이 발생한다
 - F2는 참조로 전달받지만 값으로 반환하므로, 반환 시 복사가 발생한다
 - B 클래스는 A를 상속받아 암시적 생성자와 복사 생성자를 가진다
