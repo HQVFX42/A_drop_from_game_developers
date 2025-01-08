@@ -1,7 +1,9 @@
 ﻿# CPP
 - [OOP(Object-Oriented Programming)](#OOP)
 - [Class](#Class)
+- [Constructor & Destructor](#Constructor-&-Destructor)
 - [auto](#auto)
+- [Pointer](#Pointer)
 - [Reference vs Copy](#Reference-vs-Copy)
 
 ---
@@ -105,52 +107,141 @@
             - 그렇기 때문에 템플릿 클래스의 함수 구현은 헤더파일에 들어가야 한다
             - 혹은 헤더에서 템플릿 정의부분 아래에 cpp파일을 include하는 방법도 있지만 cpp파일을 빌드 리스트에 넣지 말아야 한다
 
-## Reference & Pointer
+## Constructor & Destructor
+```cpp
+    using namespace std;
 
-### Reference
+    struct A
+    {
+	    int n;
+	    A(int n = 1) : n(n) { cout << "Constructor" << '\n'; }
+	    ~A() { cout << "Destructor" << '\n'; }
+	    A(const A & a) : n(a.n) { cout << "Copy" << '\n'; } // user-defined copy constructor
+	    A(A &&) { cout << "Move" << '\n'; }
+    };
+
+    struct B : A
+    {
+	    // implicit default constructor B::B()
+	    // implicit copy constructor B::B(const B&)
+    };
+
+    A F1(A a)
+    {
+	    return a;
+    }
+
+    A F2(A & a)
+    {
+	    return a;
+    }
+
+    int main()
+    {
+	    A a1(7);
+	    A a2(a1); // calls the copy constructor
+	    A a3 = F1(a2);
+	    A a4 = F2(a3);
+
+	    cout << "---" << '\n';
+
+	    B b;
+	    B b2 = b;
+	    A a5 = b; // conversion to A& and copy constructor
+
+	    cout << "---" << '\n';
+
+	    return 0;
+    }
+```
+
+<br> 위 코드의 출력 값은 아래와 같다
+
+```cpp
+    Constructor
+    Copy
+    Copy
+    Move
+    Destructor
+    Copy
+    ---
+    Constructor
+    Constructor
+    Copy
+    ---
+    Destructor
+    Destructor
+    Destructor
+    Destructor
+    Destructor
+    Destructor
+    Destructor
+```
+각 줄에 대한 설명 :
+1. Constructor: A a1(7);에서 a1 객체 생성
+1. Copy: A a2(a1);에서 a1을 a2로 복사
+1. Copy: F1(a2)에서 a2를 함수 매개변수로 복사
+1. Move: F1의 반환값을 a3로 이동
+1. Destructor: F1 함수의 지역 변수(매개변수) 소멸
+1. Copy: F2(a3)의 반환값을 a4로 복사
+1. ---: 구분선 출력
+1. Constructor: B b;에서 B의 기본 생성자 호출 (A의 생성자도 호출됨)
+1. Constructor: B b2 = b;에서 B의 암시적 복사 생성자 호출 (A의 생성자도 호출됨)
+1. Copy: A a5 = b;에서 B를 A로 변환 후 복사
+1. ---: 구분선 출력
+1. 12-18. Destructor x 7: a5, b2, b, a4, a3, a2, a1 순으로 소멸
+
+주요 포인트:
+- F1은 값으로 전달받고 반환하므로, 복사 후 이동이 발생한다
+- F2는 참조로 전달받지만 값으로 반환하므로, 반환 시 복사가 발생한다
+- B 클래스는 A를 상속받아 암시적 생성자와 복사 생성자를 가진다
+- B에서 A로의 변환 시 복사 생성자가 호출된다
+- 소멸자는 생성된 객체의 역순으로 호출된다
 
 ## auto
-> 기본 특징
+**기본 특징**
 - C++11에서 도입된 자동 타입 추론 키워드
 - 선언과 동시에 반드시 초기화가 필요
 - 컴파일러가 초기화 값을 기반으로 타입을 자동으로 결정
 
-> 주의사항
+**주의사항**
 - 초기화 없이 선언만 하는 것은 불가능
 - 한번 타입이 결정되면 다른 타입으로 변경 불가능
 - 코드의 가독성을 위해 명확한 상황에서만 사용 권장
 
-## Reference vs Copy
-> Reference
-- 변수의 별칭(alias)으로 작동
-- 직접 메모리 참조 방식 사용
-- NULL 초기화 불가능
-
-> Copy와의 차이점
-- 레퍼런스는 추가 메모리 공간을 소모하지 않음
-- 복사자는 값 복사로 인한 메모리 소모 발생
-- 함수 호출 시 레퍼런스 값 복사가 발생하지 않음
+## Pointer
 
 ## Smart pointer
-> Unique_ptr
+**Unique_ptr**
 - 객체의 유일한 소유권 보장
 - 자동 메모리 해제 기능
 - 소유권 이전 시 MoveTemp() 사용
 
-> Shared_ptr
+**Shared_ptr**
 - 여러 포인터가 하나의 객체 공유 가능
 - 참조 카운트 기반 자동 메모리 관리
 - 스레드 안전성 보장
 
-> Weak_ptr
+**Weak_ptr**
+
+## Reference vs Copy
+**Reference**
+- 변수의 별칭(alias)으로 작동
+- 직접 메모리 참조 방식 사용
+- NULL 초기화 불가능
+
+**Copy와의 차이점**
+- 레퍼런스는 추가 메모리 공간을 소모하지 않음
+- 복사자는 값 복사로 인한 메모리 소모 발생
+- 함수 호출 시 레퍼런스 값 복사가 발생하지 않음
 
 ## Interface
-> 특징과 활용
+**특징과 활용**
 - 순수 가상 함수로만 구성
 - 클래스의 뼈대 역할 수행
 - 다중 상속 가능
 
-> 구현 방법
+**구현 방법**
 - virtual 키워드와 =0 사용
 - 모든 멤버 함수는 public 및 virtual로 선언
 - 구현 클래스에서 모든 함수 오버라이딩 필수
