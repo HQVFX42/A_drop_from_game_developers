@@ -1,4 +1,4 @@
-﻿# Sections
+﻿# Contents
 - [Garbage Collection](#Unreal-Engine의-Garbage-Collection-시스템)
 - [Network](#UE-Network)
 - [String Handling](#String-Handling)
