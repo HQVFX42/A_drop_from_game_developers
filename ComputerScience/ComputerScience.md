@@ -2,6 +2,7 @@
 - [Instruction Pipelining](#Instruction-Pipelining)
 - [Branch Prediction](#Branch-Prediction)
 - [Normalized Device Coordinates (NDC)](#Normalized-Device-Coordinates-(NDC))
+- [Design Patterns](#Desing-Patterns)
 
 ## Instruction Pipelining
 Instruction pipelining은 현대 프로세서 설계에서 사용되는 기술로, 명령어 처리량을 증가시키는 데 사용된다
@@ -103,3 +104,44 @@ Normalized Device Coordinates (NDC)는 컴퓨터 그래픽스에서 중요한 �
 
 NDC는 3D 그래픽스 파이프라인에서 중요한 중간 단계로,  
 개발자들이 효율적이고 일관된 방식으로 3D 객체를 2D 화면에 표시할 수 있게 해준다
+
+## Design Patterns
+### MVVM
+- MVVM(Model-View-ViewModel) 디자인 패턴은 사용자 인터페이스 로직을 비즈니스 로직과 분리하여  
+애플리케이션의 유지보수성과 테스트 용이성을 향상시키는 아키텍처 패턴입니다.  
+MVVM은 다음 세 가지 주요 구성 요소로 이루어져 있습니다:  
+
+- Model
+	- 애플리케이션의 데이터와 비즈니스 로직을 담당합니다.
+	- UI와 독립적으로 동작하며, 데이터의 유효성 검사, 데이터베이스 작업, 네트워크 요청 등을 처리합니다.
+
+- View
+	- 사용자에게 보여지는 UI 요소를 담당합니다.
+	- 사용자 입력을 받아 ViewModel에 전달하고, ViewModel로부터 받은 데이터를 표시합니다.
+	- 데이터 바인딩을 통해 ViewModel과 연결되어 자동으로 UI를 업데이트합니다.
+
+- ViewModel
+	- View와 Model 사이의 중재자 역할을 합니다.
+	- Model의 데이터를 View에 적합한 형태로 변환하고 가공합니다.
+	- View에 필요한 데이터와 명령을 제공합니다.
+	- View의 상태를 관리하고 사용자 상호작용에 대한 로직을 처리합니다.
+
+- MVVM 패턴의 주요 특징:
+1. 데이터 바인딩: View와 ViewModel 사이의 자동 동기화를 제공합니다.
+1. 관심사의 분리: UI 로직과 비즈니스 로직을 명확히 분리합니다.
+1. 테스트 용이성: ViewModel은 UI에 독립적이므로 단위 테스트가 용이합니다.
+1. 재사용성: ViewModel은 여러 View에서 재사용될 수 있습니다.
+1. 유지보수성: 각 구성 요소가 독립적이므로 수정과 확장이 용이합니다.
+
+- MVVM 패턴의 장점:
+View와 Model 사이의 의존성이 없어 모듈화와 병렬 개발이 가능합니다.
+복잡한 UI 로직을 ViewModel로 분리하여 Controller의 부담을 줄입니다.
+데이터 바인딩을 통해 UI 업데이트 코드를 줄일 수 있습니다.
+
+- 단점:
+간단한 UI에서는 오히려 복잡도가 증가할 수 있습니다.
+데이터 바인딩 구현에 추가적인 학습이 필요할 수 있습니다.
+복잡한 애플리케이션에서는 ViewModel이 비대해질 수 있습니다.
+MVVM 패턴은 특히 복잡한 UI와 데이터 처리가 필요한 대규모 애플리케이션에서 효과적이며, 모바일 및 데스크톱 애플리케이션 개발에 널리 사용되고 있습니다
+
+### Singleton
