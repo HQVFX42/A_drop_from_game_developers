@@ -63,7 +63,7 @@ Branch prediction은 현대 프로세서 설계에서 중요한 기술로, 조�
 		1. 상관 예측기 (Correlating Predictor)
 
 ### 장점
-- 파이프라인 스톨 감소
+- 파이프라인 스톨(Pipeline stall) 감소
 - 명령어 처리량 증가
 - 전체적인 프로세서 성능 향상
 
