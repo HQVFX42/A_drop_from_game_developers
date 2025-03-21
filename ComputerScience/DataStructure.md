@@ -12,6 +12,63 @@
   - 삽입/삭제 시 O(n) 시간 소요
 - **용도**: 데이터 크기가 고정적이고 빠른 접근이 필요한 경우
 
+#### Reverse
+```cpp
+void ReverseArray(int arr[], int start, int end)
+{
+	while (start < end)
+	{
+		int temp = arr[start];
+		arr[strat] = arr[end];
+		arr[end] = temp;
+
+		start++;
+		end--;
+	}
+}
+```
+
+#### Split
+```cpp
+/**
+ * CPP split() method.
+ */
+vector<string> Split(string Input, string Delimiter)
+{
+	vector<string> Result;
+	long long pos = 0;
+	string token = "";
+	while ((pos = Input.find(Delimiter)) != string::npos)
+	{
+		token = Input.substr(0, pos);
+		Result.push_back(token);
+		Input.erase(0, pos + Delimiter.length());
+	}
+	Result.push_back(Input);
+	
+	return Result;
+}
+
+/**
+ * Cpp split() method - faster version.
+ */
+vector<string> Split(const string& Input, string Delimiter)
+{
+	vector<string> Result;
+	auto Start = 0;
+	auto End = Input.find(Delimiter);
+	while (End != string::npos)
+	{
+		Result.push_back(Input.substr(Start, End - Start));
+		Start = End + Delimiter.size();
+		End = Input.find(Delimiter, Start);
+	}
+	Result.push_back(Input.substr(Start));
+
+	return Result;
+}
+```
+
 ### List
 - **특징**: 노드 기반 순차적 데이터 구조
 - **장점**: 
