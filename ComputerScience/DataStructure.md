@@ -201,23 +201,39 @@ vector<string> Split(const string& Input, string Delimiter)
 	}
 	```
 	```cpp
-	Node* LinkedList::Reverse()
-	{
-		Node* Prev = nullptr;
-		Node* Current = Head;
-		Node* Next = nullptr;
+	 Node* LinkedList::Reverse()
+	 {
+		 // 역순으로 변환할 때 사용할 이전 노드 포인터를 초기화
+		 Node* Prev = nullptr;
 
-		while (Current != nullptr)
-		{
-			Next = Current->Next;
-			Current->Next = Prev;
-			Prev = Current;
-			Current = Next;
-		}
+		 // 현재 노드 포인터를 리스트의 첫 번째 노드로 설정
+		 Node* Current = Head;
 
-		Head = Prev;
-		return Head;
-	}
+		 // 다음 노드 포인터를 초기화
+		 Node* Next = nullptr;
+
+		 // 리스트의 모든 노드를 순회
+		 while (Current != nullptr)
+		 {
+			 // 현재 노드의 다음 노드를 임시로 저장
+			 Next = Current->Next;
+
+			 // 현재 노드의 다음 포인터를 이전 노드로 설정하여 역순으로 연결
+			 Current->Next = Prev;
+
+			 // 이전 노드를 현재 노드로 이동
+			 Prev = Current;
+
+			 // 현재 노드를 다음 노드로 이동
+			 Current = Next;
+		 }
+
+		 // 리스트의 첫 번째 노드를 역순으로 변환된 리스트의 첫 번째 노드로 설정
+		 Head = Prev;
+
+		 // 역순으로 변환된 리스트의 첫 번째 노드를 반환
+		 return Head;
+	 }
 	```
 	```cpp
 	int LinkedList::Size()
@@ -264,14 +280,12 @@ vector<string> Split(const string& Input, string Delimiter)
 		std::cout << "List2: ";
 		List2.Display();
 
-		List1.Concatenate(List2);
-
 		std::cout << "Concatenated List: ";
+		List1.Concatenate(List2);
 		List1.Display();
 
-		List1.Reverse();
-
 		std::cout << "Reversed List: ";
+		List1.Reverse();
 		List1.Display();
 
 		return 0;
