@@ -1,8 +1,33 @@
 ﻿# Contents
+- [Pipeline Stall](#Pipelin-Stall)
 - [Instruction Pipelining](#Instruction-Pipelining)
 - [Branch Prediction](#Branch-Prediction)
 - [Normalized Device Coordinates (NDC)](#Normalized-Device-Coordinates-(NDC))
 - [Design Patterns](#Desing-Patterns)
+
+## Pipeline Stall
+Pipeline stall은 CPU의 파이프라인에서 발생하는 지연 현상으로, 파이프라인의 효율성을 저하시킨다
+
+### 종류
+1. 데이터 해저드 (Data Hazard)
+    - 명령어 실행 순서에 따라 데이터 의존성으로 인한 지연
+	- 예: RAW (Read After Write), WAR (Write After Read), WAW (Write After Write)
+
+1. 제어 해저드 (Control Hazard)
+    - 분기 명령어에 의한 지연
+	- 예: 분기 명령어의 조건 판단 결과가 나오기 전까지 다음 명령어 실행을 지연
+
+1. 구조적 해저드 (Structural Hazard)
+	- 하드웨어 자원 충돌로 인한 지연
+	- 예: 메모리 접근, I/O 작업
+
+### 해결 방법
+1. Forwarding (데이터 포워딩)
+	- 명령어 실행 결과를 바로 다음 명령어로 전달하여 데이터 해저드 해결
+1. Branch Prediction (분기 예측)
+	- 분기 명령어의 결과를 예측하여 제어 해저드 해결
+1. Pipeline Flush (파이프라인 플러시)
+	- 잘못된 예측 시 파이프라인을 비우고 다시 시작
 
 ## Instruction Pipelining
 Instruction pipelining은 현대 프로세서 설계에서 사용되는 기술로, 명령어 처리량을 증가시키는 데 사용된다
