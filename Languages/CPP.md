@@ -445,7 +445,8 @@ a - b;
 ```cpp
 // 복사 생성자는 클래스 객체를 인수로 받습니다.player(const player&);
 
-// 클래스 정의class player
+// 클래스 정의
+class player
 {
 	private:
 		string name_;
@@ -475,11 +476,12 @@ main() 함수
 ```cpp
 int main()
 {
-// 1
+    // 1
 	player b = player("b", 184);
 	b.Display();
 
-// 깂 복사player a(b);
+    // 값 복사
+    player a(b);
 	a.Display();
 	return 0;
 }
