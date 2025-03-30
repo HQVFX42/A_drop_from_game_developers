@@ -7,6 +7,128 @@
 - [Reference vs Copy](#Reference-vs-Copy)
 
 ---
+
+## **"구조체 vs 클래스: C++ 문법 심층 분석"** 영상 요약 (Git 저장소 정리용)
+
+### 🔍 **핵심 주제: 구조체(Struct)와 클래스(Class)의 차이**
+#### 1. **접근 제한 지정자 (Access Modifiers)**
+- **클래스**: 기본 접근 제한자가 `private`  
+  ```cpp
+  class Person {
+      int age;       // 기본값: private (외부 접근 불가)
+      float height;
+  public:
+      char name[26]; // public으로 명시적 선언
+  };
+  ```
+- **구조체**: 기본 접근 제한자가 `public`  
+  ```cpp
+  struct Person {
+      int age;       // 기본값: public (외부 접근 가능)
+      float height;
+  };
+  ```
+- **활용 목적**:  
+  데이터 보호가 필요한 경우(예: 게임 캐릭터 속성) → **클래스**  
+  단순 데이터 묶음 → **구조체**
+
+---
+
+### 🛠 **멤버 함수(Member Function) 구현**
+#### 1. **클래스 내부 함수의 장점**
+- **객체 지향적 접근**: 함수 호출 시 `this` 포인터가 자동 전달됨  
+  ```cpp
+  class Person {
+  public:
+      void AddAge() { 
+          age++;    // this->age++와 동일 (암시적 처리)
+      }
+  };
+  ```
+- **사용 예시**:  
+  ```cpp
+  Person hwayoung;
+  hwayoung.AddAge();  // hwayoung 객체의 age 증가
+  ```
+
+#### 2. **`this` 포인터의 동작 원리**
+- **암묵적 전달**: 멤버 함수 호출 시 객체의 주소가 `this`에 할당됨  
+  ```cpp
+  void AddAge(Person* this) {  // 실제 컴파일러 동작 방식
+      this->age++;
+  }
+  ```
+- **`const` 멤버 함수**:  
+  ```cpp
+  void PrintInfo() const { 
+      // this->age 수정 불가 (읽기 전용 함수)
+  }
+  ```
+
+---
+
+### 🧩 **실습 코드 분석**
+#### 1. **객체 생성 및 초기화**
+```cpp
+Person june;                // 구조체 방식
+june.age = 10;              // 직접 접근 (public)
+june.SetHeight(180);        // 클래스 메서드 사용
+```
+
+#### 2. **데이터 캡슐화 사례**
+```cpp
+class BankAccount {
+private:
+    string owner;           // 외부 접근 차단
+    int balance;
+public:
+    void Deposit(int money) { 
+        balance += money;   // 안전한 자금 관리
+    }
+};
+```
+
+---
+
+### ⚠️ **주의사항 & 실무 팁**
+1. **메모리 관리**:  
+   - 구조체/클래스 내부의 **동적 할당 메모리**는 반드시 소멸자에서 해제.
+2. **`const` 활용**:  
+   ```cpp
+   const Person p; 
+   p.PrintInfo();  // const 함수만 호출 가능
+   ```
+3. **포인터와 참조**:  
+   - 멤버 함수에서 `this`는 `Person* const` 타입 (주소 변경 불가).
+
+---
+
+### 📌 **Git 저장소 정리 가이드**
+1. **폴더 구조**:  
+   ```
+   /Cpp-OOP  
+   ├─ /examples  
+   │  ├─ struct_vs_class.cpp  
+   │  └─ member_function.cpp  
+   ├─ /notes  
+   │  └─ access_modifiers.md  
+   └─ README.md (본 요약 내용 포함)
+   ```
+2. **커밋 메시지 예시**:  
+   ```bash
+   git commit -m "feat: Add struct/class comparison example"
+   ```
+
+---
+
+이 영상은 C++의 객체 지향 설계 기초를 탄탄히 잡을 수 있는 핵심 내용을 담고 있습니다.  
+**"캡슐화"**와 **`this` 포인터** 개념은 게임 엔진 개발에서도 광범위하게 활용되므로 반드시 숙지할 것!
+
+Citations:
+[1] https://www.youtube.com/watch?v=Vm2fNaEc1Lo
+
+---
+
 ## OOP
 ### 절차적 프로그래밍?
 - 프로그램 설계 시 기능 구현을 위해 프로시저(함수)를 중점으로 사용하여 구조/로직을 설계하는 방법
