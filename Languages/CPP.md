@@ -452,6 +452,79 @@ git commit -m "feat: Add struct vs class comparison and member function examples
 - 복사자는 값 복사로 인한 메모리 소모 발생
 - 함수 호출 시 레퍼런스 값 복사가 발생하지 않음
 
+## 복사 생성자
+객체가 다른 객체를 복사하고 싶다?
+
+```cpp
+player a;
+player b = player("b", 184);
+```
+
+두 개의 객체가 생성되었습니다. 하나는 디폴트 생성자로 객체를 생성했고, 하나는 명시적으로 매개 변수를 정의했습니다.
+그런데 a 객체에 b 객체의 내용을 복사하고 싶습니다.
+대입 연산자를 이용했습니다.
+
+```cpp
+a - b;
+```
+
+이렇게 복사하는 것을 `얕은 복사`라고 합니다. 값을 복사하는 것이 아니라 값을 가리키는 포인터를 복사하는 것입니다.
+객체 대입을 얕은 복사로 진행하면 문제가 생길 수 있습니다. 따라서 깊은 복사로 객체 대입을 진행해야 합니다.
+
+`깊은 복사`란? 값 자체를 복사하는 것을 말합니다.
+클래스에서는 이런 깊은 복사를 가능케 하는 복사 생성자를 정의할 수 있습니다.
+복사 생성자는 자신과 같은 클래스 타입의 객체에 대한 참조를 인수로 받아서 자신을 초기화하는 생성자입니다.
+다음은 복사 생성자를 정의한 클래스입니다.
+
+```cpp
+// 복사 생성자는 클래스 객체를 인수로 받습니다.player(const player&);
+
+// 클래스 정의class player
+{
+	private:
+		string name_;
+		int height_;
+
+	public:
+		player(const string& name, int height);
+		player();
+		player(const player&);
+		void Display();
+};
+```
+복사 생성자는 다음과 같은 방식으로 정의됩니다.
+이를 보면 알 수 있듯이, 복사 생성자는 값을 복사하는 것에 초점을 맞추고 있습니다.
+
+```cpp
+player::player(const player& another)
+{
+	name_ = another.name_;
+	height_ = another.height_;
+}
+```
+
+main() 함수입니다.
+```cpp
+int main()
+{
+// 1
+	player b = player("b", 184);
+	b.Display();
+
+// 깂 복사player a(b);
+	a.Display();
+	return 0;
+}
+```
+
+b 객체를 생성한 후, a 객체를 생성할 땐 복사 생성자를 이용했습니다.
+이에 따라 b 객체의 정보가 모두 a 객체에도 복사되었습니다.
+결과
+선수의 이름 : b
+선수의 키 : 184
+선수의 이름 : b
+선수의 키 : 184
+
 ## Interface
 **특징과 활용**
 - 순수 가상 함수로만 구성
