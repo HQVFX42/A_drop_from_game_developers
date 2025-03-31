@@ -28,7 +28,10 @@ Happy sharing and discovering! :smile:
 
 ## :droplet:Drops
 - Computer Science
-    - [?](./ComputerScience/ComputerScience.md)
+    - [Algorithm](./ComputerScience/Algorithm.md)
+    - [CS](./ComputerScience/ComputerScience.md)
+    - [DataStructure](./ComputerScience/DataStructure.md)
+    - [OS](./ComputerScience/OS.md)
     
 - Languages
     - [CPP](./Languages/CPP.md)
@@ -37,3 +40,4 @@ Happy sharing and discovering! :smile:
 - Game Engines
     - [Unreal](./GameEngines/Unreal.md)
     - [Unity](./GameEngines/Unity.md)
+    - [GameProgramming](./GameEngines/GameProgramming.md)
