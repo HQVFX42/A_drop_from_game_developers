@@ -1,4 +1,8 @@
 ﻿# 자료구조와 알고리즘 핵심 개념
+- Array
+- Linked List
+- Tree
+- Graph
 
 ## 1. 기본 자료구조 특징
 
