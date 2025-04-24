@@ -491,9 +491,90 @@ vector<string> Split(const string& Input, string Delimiter)
   - 메모리 효율적 사용
 - **단점**: 데이터 접근의 제한성
 
+```cpp
+#include <iostream>
+
+struct Node
+{
+    int data;
+    Node* next;
+};
+
+
+Node* top = nullptr;
+Node* bottom = nullptr;
+
+//Stack
+void push(int value)
+{
+    Node* buff = new Node();
+    buff->data = value;
+    buff->next = top;
+    top = buff;
+}
+
+void pop()
+{
+    Node* backup = top;
+    top = top->next;
+    delete backup;
+}
+
+int Top()
+{
+    return top->data;
+}
+```
+
 ### Queue
 - **특징**: FIFO(First In First Out) 구조
 - **장점**: 
   - 데이터 순서 보장
   - 동시성 처리에 유용
 - **단점**: 중간 데이터 접근 불가
+
+```cpp
+#include <iostream>
+
+struct Node
+{
+    int data;
+    Node* next;
+};
+
+
+Node* head = nullptr;
+Node* tail = nullptr;
+
+
+//Queue
+void push(int value)
+{
+
+    if (head == nullptr)
+    {
+        Node* buff = new Node();
+        buff->data = value;
+        head = buff;
+        tail = buff;
+    }
+    else
+    {
+        tail->next = new Node();
+        tail = tail->next;
+        tail->data = value;
+    }
+}
+
+void pop()
+{
+    Node* backup = head;
+    head = head->next;
+    delete backup;
+}
+
+int top()
+{
+    return head->data;
+}
+```
