@@ -4,6 +4,7 @@
 - [Branch Prediction](#Branch-Prediction)
 - [Normalized Device Coordinates (NDC)](#Normalized-Device-Coordinates-(NDC))
 - [Design Patterns](#Desing-Patterns)
+- [Stack Meoery & Stack Frame]()
 
 ## Pipeline Stall
 Pipeline stall은 CPU의 파이프라인에서 발생하는 지연 현상으로, 파이프라인의 효율성을 저하시킨다
