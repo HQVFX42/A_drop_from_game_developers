@@ -1,7 +1,8 @@
 ﻿# Contents
 - [OOP(Object-Oriented Programming)](#oop)
 - [Class](#class)
-- [Constructor & Destructor](#constructor--destructor)
+    - [Constructor & Destructor](#constructor--destructor)
+    - [동적할당](#동적할당)
 - [auto](#auto)
 - [Pointer](#pointer)
 - [Reference vs Copy](#reference-vs-copy)
@@ -377,6 +378,11 @@ Person* const this; // 디스 포인터는 상수 포인터로 선언됨 (주소
 - B 클래스는 A를 상속받아 암시적 생성자와 복사 생성자를 가진다
 - B에서 A로의 변환 시 복사 생성자가 호출된다
 - 소멸자는 생성된 객체의 역순으로 호출된다
+
+### 동적할당
+- 함수 malloc / free
+- 연산자 new / delete
+- 차이점은 malloc / free는 생성자 소멸자 호출이 안되고 new는 된다
 
 ## auto
 **기본 특징**
