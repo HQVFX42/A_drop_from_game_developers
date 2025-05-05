@@ -390,6 +390,10 @@ Person* const this; // 디스 포인터는 상수 포인터로 선언됨 (주소
 - 코드의 가독성을 위해 명확한 상황에서만 사용 권장
 
 ## Pointer
+- 메모리 주소를 저장하는 변수
+
+### this pointer?
+- this 포인터는 cpp에서 클래스의 멤버에 함수가 호출될 때, 해당 함수를 호출한 객체 자신을 가리키는 포인터
 
 ## Smart pointer
 **Unique_ptr**
