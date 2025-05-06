@@ -471,59 +471,59 @@ int main()
 
     - 소멸자를 virtual로 선언하면, **실제 객체 타입에 맞는 소멸자(자식 → 부모 순서)**가 호출됩니다.  
     즉, 자식 소멸자가 먼저 실행되고 그 다음 부모 소멸자가 실행되어 정확하고 안전하게 자원이 해제됩니다
-```cpp
-class Player
-{
-public:
-	Player()
-	{
-		std::cout << "Player()" << std::endl;
-	}
-	virtual ~Player()
-	{
-		std::cout << "~Player()" << std::endl;
-	}
-};
+    ```cpp
+    class Player
+    {
+    public:
+        Player()
+        {
+            std::cout << "Player()" << std::endl;
+        }
+        virtual ~Player()
+        {
+            std::cout << "~Player()" << std::endl;
+        }
+    };
 
-class Pet
-{
-public:
-	Pet()
-	{
-		std::cout << "Pet()" << std::endl;
-	}
-	virtual ~Pet()
-	{
-		std::cout << "~Pet()" << std::endl;
-	}
-};
+    class Pet
+    {
+    public:
+        Pet()
+        {
+            std::cout << "Pet()" << std::endl;
+        }
+        virtual ~Pet()
+        {
+            std::cout << "~Pet()" << std::endl;
+        }
+    };
 
-class Assassin : public Player
-{
-public:
-	Assassin()
-	{
-		_pet = new Pet();
-		std::cout << "Assassin()" << std::endl;
-	}
-	virtual ~Assassin()
-	{
-		std::cout << "~Assassin()" << std::endl;
-		delete _pet;
-	}
+    class Assassin : public Player
+    {
+    public:
+        Assassin()
+        {
+            _pet = new Pet();
+            std::cout << "Assassin()" << std::endl;
+        }
+        virtual ~Assassin()
+        {
+            std::cout << "~Assassin()" << std::endl;
+            delete _pet;
+        }
 
-private:
-	Pet* _pet;
-	//Pet _pet2;	// 포인터 타입이 아니면 자동으로 생성자 호출
-};
+    private:
+        Pet* _pet;
+        //Pet _pet2;	// 포인터 타입이 아니면 자동으로 생성자 호출
+    };
 
-int main()
-{
-	Player* player = new Assassin();
+    int main()
+    {
+        Player* player = new Assassin();
 
-	delete player;
-}
-```
+        delete player;
+    }
+    ```
 
 - Exapmle
 ```cpp
