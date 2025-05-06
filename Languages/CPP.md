@@ -766,10 +766,10 @@ class Wolf
 
 int main()
 {
+	// **********************************************************
 	// 1. static_cast : 타입 원칙에 상식적인 형변환
 	// int <-> float
 	// Player* -> Assassin*
-
 	int hp = 10;
 	int maxHp = 100;
 
@@ -782,6 +782,7 @@ int main()
 	//Assassin* assassin2 = (Assassin*)player;	// C-style cast
 	Assassin* assassin2 = static_cast<Assassin*>(player);
 
+	// **********************************************************
 	// 2. dynamic_cast : 런타임에 타입을 확인하는 형변환
 	// 상속관계에서의 안전한 변환
 	// 다형성을 활용하는 방식 (virtual)
@@ -795,6 +796,7 @@ int main()
 		std::cout << "Player2 is not paladin" << std::endl;
 	}
 
+	// **********************************************************
 	// 3. const_cast : const 속성을 제거하는 형변환
 	// const_cast는 주로 API에서 const 속성을 제거할 때 사용된다
 	// 예를 들어, const char* -> char*로 변환할 때 사용된다
@@ -810,6 +812,7 @@ int main()
 	*q = 10; // 정상적으로 x의 값이 10으로 바뀜
 	std::cout << x << std::endl; // 10
 
+	// **********************************************************
 	// 4. reinterpret_cast : 포인터를 전혀 관계없는 포인터나 값으로 변환
 	// 위험하고 강력한 형변환
 	Wolf* wolf = reinterpret_cast<Wolf*>(player);
