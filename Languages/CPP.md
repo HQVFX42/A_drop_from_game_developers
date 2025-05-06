@@ -639,86 +639,94 @@ int main()
 - 함수 호출 시 레퍼런스 값 복사가 발생하지 않음
 
 ### 복사 생성자
-> 객체가 다른 객체를 복사하고 싶다?
+- 복사 생성자는 자신과 같은 클래스 타입의 객체에 대한 참조를 인수로 받아서 자신을 초기화하는 생성자 
 
 ```cpp
-player a;
-player b = player("b", 184);
-```
+// 복사 생성자는 클래스 객체를 인수로 받습니다. Pet(const Pet& other)
 
-두 개의 객체가 생성되었다.  
-하나는 디폴트 생성자로 객체를 생성했고, 하나는 명시적으로 매개 변수를 정의한다.  
-그런데 a 객체에 b 객체의 내용을 복사하고 싶다.
-대입 연산자를 이용한다.
-
-```cpp
-a = b;
-```
-
-#### 이렇게 복사하는 것을 `얕은 복사`라고 한다.  
-값을 복사하는 것이 아니라 값을 가리키는 포인터를 복사하는 것.  
-객체 대입을 얕은 복사로 진행하면 문제가 생길 수 있다.  
-따라서 깊은 복사로 객체 대입을 진행해야 한다.
-
-#### `깊은 복사`란? 값 자체를 복사하는 것을 말한다.  
-클래스에서는 이런 깊은 복사를 가능케 하는 복사 생성자를 정의할 수 있다.  
-복사 생성자는 자신과 같은 클래스 타입의 객체에 대한 참조를 인수로 받아서 자신을 초기화하는 생성자다.  
-다음은 복사 생성자를 정의한 클래스다.
-
-```cpp
-// 복사 생성자는 클래스 객체를 인수로 받습니다.player(const player&);
-
-// 클래스 정의
-class player
+class Player
 {
-	private:
-		string name_;
-		int height_;
-
-	public:
-		player(const string& name, int height);
-		player();
-		player(const player&);
-		void Display();
+public:
+	Player()
+	{
+		std::cout << "Player()" << std::endl;
+	}
+	virtual ~Player()
+	{
+		std::cout << "~Player()" << std::endl;
+	}
 };
-```
 
-복사 생성자는 다음과 같은 방식으로 정의된다.  
-이를 보면 알 수 있듯이, 복사 생성자는 값을 복사하는 것에 초점을 맞추고 있다.
-
-```cpp
-player::player(const player& another)
+class Pet
 {
-	name_ = another.name_;
-	height_ = another.height_;
-}
-```
+public:
+	Pet()
+	{
+		std::cout << "Pet()" << std::endl;
+	}
+	virtual ~Pet()
+	{
+		std::cout << "~Pet()" << std::endl;
+	}
 
-main() 함수
+	Pet(const Pet& other)
+	{
+		std::cout << "Pet(const Pet& other)" << std::endl;
+	}
+};
 
-```cpp
+class Assassin : public Player
+{
+public:
+	Assassin()
+	{
+		_pet = new Pet();
+		std::cout << "Assassin()" << std::endl;
+	}
+	virtual ~Assassin()
+	{
+		std::cout << "~Assassin()" << std::endl;
+		delete _pet;
+	}
+	Assassin(const Assassin& other)
+	{
+		std::cout << "Assassin(const Assassin& other)" << std::endl;
+		_hp = other._hp;
+		_pet = new Pet(*other._pet);	// deep copy
+	}
+
+public:
+	int _hp = 100;
+
+private:
+	Pet* _pet;
+	//Pet _pet2;	// 포인터 타입이 아니면 자동으로 생성자 호출
+};
+
 int main()
 {
-    // 1
-	player b = player("b", 184);
-	b.Display();
+	Assassin a1;
+	a1._hp = 200;
 
-    // 값 복사
-    player a(b);
-	a.Display();
-	return 0;
+	std::cout << "-------------------------" << std::endl;
+
+	//Assassin a2;	// 기본 생성자
+	//a2 = a1;		// 복사 연산자
+
+	//Assassin a3 = a1;	// shallow copy
+	Assassin a3(a1);	// 복사 생성자
 }
 ```
 
-b 객체를 생성한 후, a 객체를 생성할 땐 복사 생성자를 이용   
-이에 따라 b 객체의 정보가 모두 a 객체에도 복사   
-```
-결과  
-선수의 이름 : b  
-선수의 키 : 184  
-선수의 이름 : b  
-선수의 키 : 184  
-```
+- 문제는 Assassin에서 Pet을 포인터로 들고 있을 때 발생하게 된다
+    - 기존 얕은복사로 포인터만 복사되어 Pet을 가리키고 있는 하나의 주소 값을 여러명의 Assassing이 가지게 되는 현상이 발생
+    - Assassin 소멸시 _pet을 delete하게 되면 같은 객체를 delete 하게 되어 크래쉬 발생
+    - 이렇게 복사하는 것을 `얕은 복사`라고 한다.  
+    값을 복사하는 것이 아니라 값을 가리키는 포인터를 복사하는 것  
+    객체 대입을 얕은 복사로 진행하면 문제가 생길 수 있다  
+    따라서 깊은 복사로 객체 대입을 진행해야 한다
+- `깊은 복사`란? 값 자체를 복사하는 것을 말한다  
+    - 클래스에서는 이런 깊은 복사를 가능케 하는 복사 생성자를 정의할 수 있다   
 
 ---
 
