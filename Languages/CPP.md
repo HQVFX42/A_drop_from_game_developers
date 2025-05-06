@@ -1,18 +1,16 @@
 ﻿# Contents
 - [OOP(Object-Oriented Programming)](#oop)
+- [static](#static)
 - [interface](#interface)
+- [auto](#auto)
 - [Class](#class)
     - [Constructor & Destructor](#constructor--destructor)
-    - [동적할당](#동적할당)
-- [static](#static)
-- [auto](#auto)
+- [동적할당](#동적할당)
 - [Pointer](#pointer)
 - [Reference vs Copy](#reference-vs-copy)
 - [메모리](#메모리-관리)
 
 ---
-
-# **구조체 vs 클래스**
 
 ## **1. 구조체(Struct)와 클래스(Class)의 차이**
 ### **기본 접근 제한 지정자**
@@ -333,6 +331,99 @@ Person* const this; // 디스 포인터는 상수 포인터로 선언됨 (주소
     };
     ```
 
+## explicit
+- 암시적으로 변환이 되는건을 방지하기 위해 생성자나 변환 연산자 앞에 사용
+
+## static
+- 특정 객체와 무관하게 만드는 키워드
+    - 즉, 글로벌하게 사용가능해지고 static 함수 선언시 일반 멤버 변수는 건드릴 수 없다
+```cpp
+class UserManager
+{
+public:
+	static UserManager* GetInstance()
+	{
+		static UserManager instance;
+		return &instance;
+	}
+
+	void AddUser()
+	{
+		userCount++;
+		std::cout << "User added. Total users: " << userCount << "\n";
+	}
+	void RemoveUser()
+	{
+		if (userCount > 0)
+		{
+			userCount--;
+			std::cout << "User removed. Total users: " << userCount << "\n";
+		}
+		else
+		{
+			std::cout << "No users to remove.\n";
+		}
+	}
+
+private:
+	int userCount = 0;
+};
+```
+
+## interface
+**특징과 활용**
+- 순수 가상 함수로만 구성
+- 클래스의 뼈대 역할 수행
+- 다중 상속 가능
+
+**구현 방법**
+- virtual 키워드와 =0 사용
+- 모든 멤버 함수는 public 및 virtual로 선언
+- 구현 클래스에서 모든 함수 오버라이딩 필수
+```cpp
+class Player
+{
+
+};
+
+class IFly	// abstract class
+{
+public:
+	virtual void Fly() = 0;	// pure virtual function
+};
+
+class Assassin : public Player, public IFly
+{
+public:
+	virtual void Fly() override
+	{
+		std::cout << "Assassin flies!\n";
+	}
+};
+
+void FlyTest(IFly* fly)
+{
+	//fly->Fly();
+}
+
+int main()
+{
+	Assassin assassin;
+	FlyTest(&assassin);	// 인터페이스 클래스 다중 상속으로 casting 가능
+	//assassin.Fly();
+}
+```
+
+## auto
+**기본 특징**
+- C++11에서 도입된 자동 타입 추론 키워드
+- 선언과 동시에 반드시 초기화가 필요
+- 컴파일러가 초기화 값을 기반으로 타입을 자동으로 결정
+
+**주의사항**
+- 초기화 없이 선언만 하는 것은 불가능
+- 한번 타입이 결정되면 다른 타입으로 변경 불가능
+- 코드의 가독성을 위해 명확한 상황에서만 사용 권장
 
 ## Class
 
@@ -370,17 +461,6 @@ Person* const this; // 디스 포인터는 상수 포인터로 선언됨 (주소
 - 소켓 프로그래밍 중 패킷 구조체를 구현할 때 #pragma pack(push, 1)을 쓰는 이유도 패딩에 있다
 - 패킷을 받은 쪽은 패킷을 읽어서 캐스틍일 통해 값을 복구해야 하는데,  
 패딩이 들어가 있으면 잘못된 크기를 가지고 캐스팅을 하게 되므로 잘못된 값이 복구되기 때문
-
-## Interface
-**특징과 활용**
-- 순수 가상 함수로만 구성
-- 클래스의 뼈대 역할 수행
-- 다중 상속 가능
-
-**구현 방법**
-- virtual 키워드와 =0 사용
-- 모든 멤버 함수는 public 및 virtual로 선언
-- 구현 클래스에서 모든 함수 오버라이딩 필수
 
 ### Constructor & Destructor
 
@@ -465,17 +545,6 @@ Person* const this; // 디스 포인터는 상수 포인터로 선언됨 (주소
 - 함수 malloc / free
 - 연산자 new / delete
 - 차이점은 malloc / free는 생성자 소멸자 호출이 안되고 new는 된다
-
-## auto
-**기본 특징**
-- C++11에서 도입된 자동 타입 추론 키워드
-- 선언과 동시에 반드시 초기화가 필요
-- 컴파일러가 초기화 값을 기반으로 타입을 자동으로 결정
-
-**주의사항**
-- 초기화 없이 선언만 하는 것은 불가능
-- 한번 타입이 결정되면 다른 타입으로 변경 불가능
-- 코드의 가독성을 위해 명확한 상황에서만 사용 권장
 
 ## Pointer
 - 메모리 주소를 저장하는 변수
