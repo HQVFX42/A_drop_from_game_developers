@@ -215,8 +215,8 @@ Person* const this; // 디스 포인터는 상수 포인터로 선언됨 (주소
 - 상속을 통해 높은 확장성을 가질 수 있다
 - 즉, 유지보수성이 뛰어나다
 
-### 특징
-- Inheritance (상속)
+### 주요 특성
+- Inheritance (상속성)
     - 자식 클래스가 부모 클래스의 변수, 함수를 물려받는 것
     - 자식 클래스는 자식만의 특성을 오버라이딩을 통해 구현한다
     - Why?
@@ -224,6 +224,33 @@ Person* const this; // 디스 포인터는 상수 포인터로 선언됨 (주소
         자식에서 세밀화하여 유연하게 코드를 작성할 수 있으며 생상성, 유지보수성 또한 올라간다 (무분별한 복붙을 막을 수 있는 효과)
         - 추후 기능개선 시 `교체`가 가능하다
         - 복붙으로 이루어진 코드들은 제각기 다른 코드이므로 개선이 필요할 때 구현을 따로따로 해줘야 하므로 유지보수가 어렵다
+    ```cpp
+    class Player
+    {
+
+    };
+
+    class Socereress : public Player
+    {
+
+    };
+
+    class Paladin : public Player
+    {
+
+    };
+
+    Socereress sorceress;
+	Player* p1 = &sorceress;
+	Paladin paladin;
+	Player* p2 = &paladin;
+	// 포인터로 담지 않으면 자식클래스의 더 많은 정보가
+	// 부모로 이동할 시 손실이 일어날 수 있다
+
+	Socereress* sorceressPtr = (Socereress*)p1;
+	// 포인트로 저장하면 데이터가 손실되는 것이 아니라
+	// Casting을 통해 원복이 가능하다
+    ```
 
 - PolyMorphism (다형성)
     - 겉은 동일하지만 상황에 따라 다르게 다양한 형태를 가지는 특성
@@ -238,10 +265,12 @@ Person* const this; // 디스 포인터는 상수 포인터로 선언됨 (주소
     class Character : public Pawn
     {
     public:
-        virtual void Move() override { std::cout << "Character Move" << std::endl; }    // 동적 바인딩 (함수 호출이 런타임에 결점 됌 ex) 가상함수, 오버라이딩
+        // 동적 바인딩 (함수 호출이 런타임에 결점 됌 ex) 가상함수, 오버라이딩
+        virtual void Move() override { std::cout << "Character Move" << std::endl; }
     };
 
-    void MovePawn(Pawn* p) { p->Move(); }   // 정적 바인딩 (함수 호출이 컴파일 시점에 결정 됌 ex) 함수 오버로딩, 연산자 오버로딩
+    // 정적 바인딩 (함수 호출이 컴파일 시점에 결정 됌 ex) 함수 오버로딩, 연산자 오버로딩
+    void MovePawn(Pawn* p) { p->Move(); }
 
     int main()
     {
@@ -249,21 +278,40 @@ Person* const this; // 디스 포인터는 상수 포인터로 선언됨 (주소
         MovePawn(&c);   // Character Move 출력
                         // 오버라이딩 하지 않을 시(virtual 미사용) Pawn Move 출력
     }
-    ``` 
+    ```
 
-- Information hiding (정보은닉)
+- Encapsulation (캡슐화, 은닉성)
     - 프로그램의 세부구현을 감추는 것
-    - private을 통해 변수와 객체를 감추고, public으로 선언된 메소드로만 접근을 허용하여 제한하는 것
+    - 접근지정자 : private을 통해 변수와 객체를 감추고, public으로 선언된 메소드로만 접근을 허용하여 제한하는 것
+    - 상속접근지정자 : 다음 세대한테 어떻게 물려줄지를 정함
     - Why?
         - 의도하지 않은 접근을 제한하기 위해 (= 설계한 클래스를 다른 사람이, 혹은 본인이 잘못 쓰는 것을 방지)
         - 이러한 코드 사용자는 프로그램의 내부 구현에 신경 쓸 필요없이 메소드를 통해 원하는 기능을 호출
     - 객체들끼리 서로의 구현과 상태를 상관하지 않고 단지 사용하게만 함으로써 의존성을 낮추는 역할을 한다
+    ```cpp
+    // private 멤버변수를 public 멤버함수(getter, setter)를 통해 접근
+    class Weapon : public Item
+    {
+    public:
+        Weapon();
+        virtual ~Weapon();
 
-    - Encapsulation (캡슐화)
-        - 클래스를 통해 변수와 함수를 하나의 단위로 묶는다
-        - 하나의 기능을 하는 요소들은 모두 한 캡슐에 모아두는 것
-        - 같은 역할을 하는 변수, 함수들을 모아두었기 때문에 의존성, 커플링이 줄어든다
-        - 즉, 관리가 용이해진다
+        virtual void PrintItemInfo() override;
+
+        void SetAttackPower(int attackPower)
+        {
+            _attackPower = attackPower;
+        }
+        int GetAttackPower() const
+        {
+            return _attackPower;
+        }
+
+    private:
+        int _attackPower = 0;
+        int _durability = 0;
+    };
+    ```
 
 
 ## Class
