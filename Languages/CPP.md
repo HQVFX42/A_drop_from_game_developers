@@ -8,6 +8,7 @@
 - [동적할당](#동적할당)
 - [Pointer](#pointer)
 - [Reference vs Copy](#reference-vs-copy)
+- [Type Casting](#Type-Casting)
 - [메모리](#메모리-관리)
 
 ---
@@ -729,6 +730,92 @@ int main()
     - 클래스에서는 이런 깊은 복사를 가능케 하는 복사 생성자를 정의할 수 있다   
 
 ---
+
+## Type Casting
+- 형변환의 종류
+    1. **static_cast**
+    1. **dynamic_cast**
+    1. const_cast
+        - const_cast는 포인터나 참조의 상수성(constness)만 제거할 뿐, 원래 상수로 선언된 객체의 값을 안전하게 변경할 수 있다는 보장을 하지 않는다  
+        - 예를 들어, const int a = 10;처럼 **진짜 상수(const로 선언된 변수)**에 대해 const_cast로 값을 변경하려 하면,  
+        컴파일러가 a의 값을 코드 전체에서 상수로 취급해 최적화할 수 있으므로, 실제로 값을 변경해도 반영되지 않거나 정의되지 않은 동작(Undefined Behavior)이 발생할 수 있다
+        - 반면, 비상수 변수(예: int x = 5;)를 const 포인터로 가리키고 const_cast로 상수성을 제거하면, 값을 정상적으로 변경할 수 있다
+    1. reinterpret_cast
+- Type casting example
+```cpp
+class Player
+{
+public:
+	virtual ~Player() {}
+};
+
+class Assassin : public Player
+{
+
+};
+
+class Paladin : public Player
+{
+
+};
+
+class Wolf
+{
+
+};
+
+int main()
+{
+	// 1. static_cast : 타입 원칙에 상식적인 형변환
+	// int <-> float
+	// Player* -> Assassin*
+
+	int hp = 10;
+	int maxHp = 100;
+
+	//float hpPercent = (float)hp / maxHp;	// C-style cast
+	float hpPercent = static_cast<float>(hp) / maxHp;
+
+	Assassin* assassin = new Assassin();
+	Player* player = assassin;
+
+	//Assassin* assassin2 = (Assassin*)player;	// C-style cast
+	Assassin* assassin2 = static_cast<Assassin*>(player);
+
+	// 2. dynamic_cast : 런타임에 타입을 확인하는 형변환
+	// 상속관계에서의 안전한 변환
+	// 다형성을 활용하는 방식 (virtual)
+	// RTTI (Run Time Type Information)
+	Paladin* paladin = new Paladin();
+	Player* player2 = paladin;
+
+	Paladin* paladin2 = dynamic_cast<Paladin*>(player);
+	if (!paladin2)
+	{
+		std::cout << "Player2 is not paladin" << std::endl;
+	}
+
+	// 3. const_cast : const 속성을 제거하는 형변환
+	// const_cast는 주로 API에서 const 속성을 제거할 때 사용된다
+	// 예를 들어, const char* -> char*로 변환할 때 사용된다
+	const int a = 10;
+	int* p = const_cast<int*>(&a);
+	*p = 20;
+	std::cout << a << std::endl;	// 10
+
+
+	int x = 5;
+	const int* p2 = &x;
+	int* q = const_cast<int*>(p2);
+	*q = 10; // 정상적으로 x의 값이 10으로 바뀜
+	std::cout << x << std::endl; // 10
+
+	// 4. reinterpret_cast : 포인터를 전혀 관계없는 포인터나 값으로 변환
+	// 위험하고 강력한 형변환
+	Wolf* wolf = reinterpret_cast<Wolf*>(player);
+	__int64 wolfPtrAddress = reinterpret_cast<__int64>(wolf);
+}
+```
 
 ## STL 특징
 - 템플릿 기반의 일반화된 알고리즘 제공
