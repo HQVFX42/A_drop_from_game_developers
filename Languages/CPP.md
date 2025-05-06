@@ -463,7 +463,69 @@ int main()
 패딩이 들어가 있으면 잘못된 크기를 가지고 캐스팅을 하게 되므로 잘못된 값이 복구되기 때문
 
 ### Constructor & Destructor
+- `Constructor`?
+- `Destructor`?
+    - 소멸자에 virtual 키워드를 사용해야 하는 이유는, 부모 클래스 포인터로 자식 클래스 객체를 삭제할 때 자식 클래스의 소멸자가 제대로 호출되도록 하기 위해서입니다.
+    **부모 클래스의 소멸자가 virtual이 아니면, 부모 클래스 포인터로 자식 객체를 delete할 때 부모 소멸자만 호출되고 자식 소멸자는 호출되지 않습니다.** 
+    이 경우 자식 클래스가 동적으로 할당한 리소스(메모리 등)가 해제되지 않아 메모리 누수와 예기치 않은 동작이 발생할 수 있습니다.  
 
+    - 소멸자를 virtual로 선언하면, **실제 객체 타입에 맞는 소멸자(자식 → 부모 순서)**가 호출됩니다.  
+    즉, 자식 소멸자가 먼저 실행되고 그 다음 부모 소멸자가 실행되어 정확하고 안전하게 자원이 해제됩니다
+```cpp
+class Player
+{
+public:
+	Player()
+	{
+		std::cout << "Player()" << std::endl;
+	}
+	virtual ~Player()
+	{
+		std::cout << "~Player()" << std::endl;
+	}
+};
+
+class Pet
+{
+public:
+	Pet()
+	{
+		std::cout << "Pet()" << std::endl;
+	}
+	virtual ~Pet()
+	{
+		std::cout << "~Pet()" << std::endl;
+	}
+};
+
+class Assassin : public Player
+{
+public:
+	Assassin()
+	{
+		_pet = new Pet();
+		std::cout << "Assassin()" << std::endl;
+	}
+	virtual ~Assassin()
+	{
+		std::cout << "~Assassin()" << std::endl;
+		delete _pet;
+	}
+
+private:
+	Pet* _pet;
+	//Pet _pet2;	// 포인터 타입이 아니면 자동으로 생성자 호출
+};
+
+int main()
+{
+	Player* player = new Assassin();
+
+	delete player;
+}
+```
+
+- Exapmle
 ```cpp
     using namespace std;
 
