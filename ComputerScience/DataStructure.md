@@ -1,6 +1,6 @@
 ﻿# 자료구조와 알고리즘 핵심 개념
 - 선형
-	- [Array](#array)
+	- [Array](#array), [Dynamic Array](#dynamic-array)
 	- [Linked List](#linked-list)
 	- [Stack](#stack), [Queue](#queue)
 - 비선형
@@ -76,13 +76,22 @@ vector<string> Split(const string& Input, string Delimiter)
 }
 ```
 
+## Dynamic Array
+- cpp : vector
+- csharp : list
+- 저장공간을 늘려 저장할 수 있는 유동적인 자료구조로 자주 사용된다
+
 ## Linked List
+- cpp : list
+- csharp : linked list
 - **특징**:
     - 노드 기반 순차적 데이터 구조
 	- 연속적인 메모리 위치에 저장되지 않는 선형 데이터 구조로 포인터를 사용해서 연결된다
 	- 각 노드는 데이터 필드와 다음 노드에 대한 참조를 포함하는 노드로 구성된다
 - **장점**: 
   - 삽입/삭제가 용이 (**항상 빠르다는 것이 아니라 삽입 삭제할 노드를 알고 있을 경우**)
+  - 위 경우가 자주 일어나는 상황을 제외하고는 동적배열이 일반적으로 성능이 더 좋아 자주 사용되는 편은 아니다
+  - 삭제도 굳이 중간에 있는 것을 빼는 것이 아니라 동적 배열에 추가적으로 boolean 변수를 이용하여 false면 폐기를 하는 경우가 더 많다
   ```cpp
   	void Insert(Node* posNode, int data)
 	{
