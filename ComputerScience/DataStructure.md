@@ -86,9 +86,9 @@ vector<string> Split(const string& Input, string Delimiter)
   ```cpp
   	void Insert(Node* posNode, int data)
 	{
-		/**                [node]                  */
-		/** [dummy]	[prevN]		 [posNode]	[dummy]*/
-		/** [head]							[tail] */
+		/**					[node]					*/
+		/** [dummy]	[prevN]		 [posNode]	[dummy]	*/
+		/** [head]							[tail] 	*/
 		Node* node = new Node(data);
 		Node* prevNode = posNode->prev;
 
@@ -100,9 +100,9 @@ vector<string> Split(const string& Input, string Delimiter)
 
 	Node* Remove(Node* node)
 	{
-		/**                [node]                  */
-		/** [dummy]	[prevN]		 [nextN]	[dummy]*/
-		/** [head]							[tail] */
+		/**					[node]					*/
+		/** [dummy]	[prevN]		 [nextN]	[dummy]	*/
+		/** [head]							[tail] 	*/
 		Node* prevNode = node->prev;
 		Node* nextNode = node->next;
 
@@ -330,207 +330,172 @@ vector<string> Split(const string& Input, string Delimiter)
 	}
 	```
 - Double Linked List:
-    ```cpp
-	struct Node
+```cpp
+class Node
+{
+	using T = int;
+public:
+	Node(T data)
+		: data(data), prev(nullptr), next(nullptr) {}
+
+public:
+	T data;
+	Node* prev;
+	Node* next;
+};
+
+class CaList
+{
+public:
+	CaList()
 	{
-		int data;         // 노드의 데이터
-		Node* prev;       // 이전 노드를 가리키는 포인터
-		Node* next;       // 다음 노드를 가리키는 포인터
-	};
-	```
-	```cpp
-	class DoubleLinkedList
+		_head = new Node(0);
+		_tail = new Node(0);
+		_head->next = _tail;
+		_tail->prev = _head;
+	}
+	~CaList()
 	{
-	private:
-		Node* head;       // 연결 리스트의 첫 번째 노드
-		Node* tail;       // 연결 리스트의 마지막 노드
-
-	public:
-		DoubleLinkedList() : head(nullptr), tail(nullptr) {}  // 기본 생성자
-
-		// 연결 리스트에 노드를 삽입하는 함수
-		void insertAtHead(int data);
-		void insertAtTail(int data);
-
-		// 연결 리스트에서 노드를 삭제하는 함수
-		void removeAtHead();
-		void removeAtTail();
-		void remove(int data);
-
-		// 연결 리스트에서 특정 값을 검색하는 함수
-		bool search(int data);
-
-		// 연결 리스트를 출력하는 함수
-		void displayForward();
-		void displayBackward();
-	};
-	```
-	```cpp
-	class Node
-	{
-		using T = int;
-	public:
-		Node(T data)
-			: data(data), prev(nullptr), next(nullptr) {}
-
-	public:
-		T data;
-		Node* prev;
-		Node* next;
-	};
-
-	class CaList
-	{
-	public:
-		CaList()
+		Node* node = _head;
+		while (node)
 		{
-			_head = new Node(0);
-			_tail = new Node(0);
-			_head->next = _tail;
-			_tail->prev = _head;
+			Node* temp = node;
+			node = node->next;
+			delete temp;
 		}
-		~CaList()
+	}
+
+	Node* GetNode(int index)
+	{
+		Node* node = _head->next;
+		if (node == _tail)
 		{
-			Node* node = _head;
-			while (node)
-			{
-				Node* temp = node;
-				node = node->next;
-				delete temp;
-			}
+			return nullptr;
 		}
 
-		Node* GetNode(int index)
+		for (int i = 0; i < index; i++)
 		{
-			Node* node = _head->next;
-			if (node == _tail)
+			if (node == _tail->prev)
 			{
 				return nullptr;
 			}
 
-			for (int i = 0; i < index; i++)
-			{
-				if (node == _tail->prev)
-				{
-					return nullptr;
-				}
-
-				node = node->next;
-			}
-
-			return node;
+			node = node->next;
 		}
 
-		void Print()
-		{
-			Node* node = _head->next;
-			while (node != _tail)
-			{
-				std::cout << node->data << " ";
-				node = node->next;
-			}
-			std::cout << std::endl;
-		}
-
-		Node* AddAtHead(int data)
-		{
-			/** Without dummy pointer */
-			/** [head]	[node]	[temp]	[2]	[3]	[tail] */
-			//Node* node = new Node(data);
-			//if (!_head)
-			//{
-			//	_head = node;
-			//	_tail = node;
-			//}
-			//else
-			//{
-			//	Node* temp = _head;
-			//	node->next = temp;
-			//	temp->prev = node;
-			//	_head = node;
-			//}
-
-			/** With dummy pointer */
-			/** [dummy]	[node]	[temp]	[2]	[3]	[dummy] */
-			/** [head]							[tail]  */
-			Node* node = new Node(data);
-			Node* temp = _head->next;
-			
-			node->next = temp;
-			temp->prev = node;
-			_head->next = node;
-			node->prev = _head;
-
-			return node;
-		}
-
-		Node* AddAtTail(int data)
-		{
-			/** [dummy]	[1]	[2]	[temp]	[node]	[dummy] */
-			/** [head]							[tail]  */
-			Node* node = new Node(data);
-			Node* temp = _tail->prev;
-
-			temp->next = node;
-			node->prev = temp;
-			node->next = _tail;
-			_tail->prev = node;
-
-			return node;
-		}
-
-		void Insert(Node* posNode, int data)
-		{
-			/**                [node]                  */
-			/** [dummy]	[prevN]		 [posNode]	[dummy]*/
-			/** [head]							[tail] */
-			Node* node = new Node(data);
-			Node* prevNode = posNode->prev;
-
-			prevNode->next = node;
-			node->prev = prevNode;
-			node->next = posNode;
-			posNode->prev = node;
-		}
-
-		Node* Remove(Node* node)
-		{
-			/**                [node]                  */
-			/** [dummy]	[prevN]		 [nextN]	[dummy]*/
-			/** [head]							[tail] */
-			Node* prevNode = node->prev;
-			Node* nextNode = node->next;
-
-			prevNode->next = nextNode;
-			nextNode->prev = prevNode;
-
-			delete node;
-
-			return nextNode;
-		}
-
-	private:
-		Node* _head = nullptr;
-		Node* _tail = nullptr;
-	};
-
-	int main()
-	{
-		CaList list;
-		list.AddAtHead(1);
-		Node* temp1 = list.AddAtHead(2);
-		list.AddAtHead(3);
-
-		list.AddAtTail(4);
-		Node* temp2 = list.AddAtTail(5);
-		list.AddAtTail(6);
-
-		list.Insert(temp1, 7);
-		list.Remove(temp2);
-
-		list.Print();
+		return node;
 	}
-	```
+
+	void Print()
+	{
+		Node* node = _head->next;
+		while (node != _tail)
+		{
+			std::cout << node->data << " ";
+			node = node->next;
+		}
+		std::cout << std::endl;
+	}
+
+	Node* AddAtHead(int data)
+	{
+		/** Without dummy pointer */
+		/** [head]	[node]	[temp]	[2]	[3]	[tail] */
+		//Node* node = new Node(data);
+		//if (!_head)
+		//{
+		//	_head = node;
+		//	_tail = node;
+		//}
+		//else
+		//{
+		//	Node* temp = _head;
+		//	node->next = temp;
+		//	temp->prev = node;
+		//	_head = node;
+		//}
+
+		/** With dummy pointer */
+		/** [dummy]	[node]	[temp]	[2]	[3]	[dummy] */
+		/** [head]							[tail]  */
+		Node* node = new Node(data);
+		Node* temp = _head->next;
+		 
+		node->next = temp;
+		temp->prev = node;
+		_head->next = node;
+		node->prev = _head;
+
+		return node;
+	}
+
+	Node* AddAtTail(int data)
+	{
+		/** [dummy]	[1]	[2]	[temp]	[node]	[dummy] */
+		/** [head]							[tail]  */
+		Node* node = new Node(data);
+		Node* temp = _tail->prev;
+
+		temp->next = node;
+		node->prev = temp;
+		node->next = _tail;
+		_tail->prev = node;
+
+		return node;
+	}
+
+	void Insert(Node* posNode, int data)
+	{
+		/**					[node]					*/
+		/** [dummy]	[prevN]		 [posNode]	[dummy]	*/
+		/** [head]							[tail] 	*/
+		Node* node = new Node(data);
+		Node* prevNode = posNode->prev;
+
+		prevNode->next = node;
+		node->prev = prevNode;
+		node->next = posNode;
+		posNode->prev = node;
+	}
+
+	Node* Remove(Node* node)
+	{
+		/**					[node]					*/
+		/** [dummy]	[prevN]		 [nextN]	[dummy]	*/
+		/** [head]							[tail] 	*/
+		Node* prevNode = node->prev;
+		Node* nextNode = node->next;
+
+		prevNode->next = nextNode;
+		nextNode->prev = prevNode;
+
+		delete node;
+
+		return nextNode;
+	}
+
+private:
+	Node* _head = nullptr;
+	Node* _tail = nullptr;
+};
+
+int main()
+{
+	CaList list;
+	list.AddAtHead(1);
+	Node* temp1 = list.AddAtHead(2);
+	list.AddAtHead(3);
+
+	list.AddAtTail(4);
+	Node* temp2 = list.AddAtTail(5);
+	list.AddAtTail(6);
+
+	list.Insert(temp1, 7);
+	list.Remove(temp2);
+
+	list.Print();
+}
+```
 
 ## Stack
 - **특징**: LIFO(Last In First Out) 구조
