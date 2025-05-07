@@ -1,15 +1,15 @@
 ﻿# 자료구조와 알고리즘 핵심 개념
 - 선형
-	- Array
-	- Linked List
-	- Stack, Queue
+	- [Array](#array)
+	- [Linked List](#linked-list)
+	- [Stack](#stack), [Queue](#queue)
 - 비선형
-	- Tree
-	- Graph
+	- [Tree](#tree)
+	- [Graph](#graph)
 
-## 1. 기본 자료구조 특징
+---
 
-### Array
+## Array
 - **특징**: 연속된 메모리 공간에 순차적 저장
 - **장점**: 
   - 인덱스를 통한 빠른 접근 (O(1))
@@ -19,7 +19,7 @@
   - 삽입/삭제 시 O(n) 시간 소요
 - **용도**: 데이터 크기가 고정적이고 빠른 접근이 필요한 경우
 
-#### Reverse
+### Reverse
 ```cpp
 void ReverseArray(int arr[], int start, int end)
 {
@@ -35,7 +35,7 @@ void ReverseArray(int arr[], int start, int end)
 }
 ```
 
-#### Split
+### Split
 ```cpp
 /**
  * CPP split() method.
@@ -76,7 +76,7 @@ vector<string> Split(const string& Input, string Delimiter)
 }
 ```
 
-### List
+## Linked List
 - **특징**:
     - 노드 기반 순차적 데이터 구조
 	- 연속적인 메모리 위치에 저장되지 않는 선형 데이터 구조로 포인터를 사용해서 연결된다
@@ -532,7 +532,7 @@ vector<string> Split(const string& Input, string Delimiter)
 	}
 	```
 
-### Stack
+## Stack
 - **특징**: LIFO(Last In First Out) 구조
 - **장점**: 
   - 구현이 간단
@@ -574,7 +574,7 @@ int Top()
 }
 ```
 
-### Queue
+## Queue
 - **특징**: FIFO(First In First Out) 구조
 - **장점**: 
   - 데이터 순서 보장
@@ -626,3 +626,7 @@ int top()
     return head->data;
 }
 ```
+
+## Tree
+
+## Graph
