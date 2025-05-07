@@ -77,13 +77,21 @@ vector<string> Split(const string& Input, string Delimiter)
 ```
 
 ## Dynamic Array
-- cpp : vector
-- csharp : list
+- cpp : vector	/ csharp : list
 - 저장공간을 늘려 저장할 수 있는 유동적인 자료구조로 자주 사용된다
+- vector의 삽입/삭제
+	- 시작 : O(N)
+	- 중간 : O(N)
+	- 끝 : O(1)
+	- 임의의 index 접근 : O(1)
 
 ## Linked List
-- cpp : list
-- csharp : linked list
+- cpp : list	/ csharp : linked list
+- list의 삽입/삭제
+	- 시작 : O(1)
+	- 중간 : O(1) `삭제할 노드를 알고 있을 때`
+	- 끝 : O(1)
+	- 임의의 index 접근 : O(N)
 - **특징**:
     - 노드 기반 순차적 데이터 구조
 	- 연속적인 메모리 위치에 저장되지 않는 선형 데이터 구조로 포인터를 사용해서 연결된다
