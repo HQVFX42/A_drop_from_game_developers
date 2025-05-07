@@ -1,8 +1,11 @@
 ﻿# 자료구조와 알고리즘 핵심 개념
-- Array
-- Linked List
-- Tree
-- Graph
+- 선형
+	- Array
+	- Linked List
+	- Stack, Queue
+- 비선형
+	- Tree
+	- Graph
 
 ## 1. 기본 자료구조 특징
 
@@ -79,7 +82,38 @@ vector<string> Split(const string& Input, string Delimiter)
 	- 연속적인 메모리 위치에 저장되지 않는 선형 데이터 구조로 포인터를 사용해서 연결된다
 	- 각 노드는 데이터 필드와 다음 노드에 대한 참조를 포함하는 노드로 구성된다
 - **장점**: 
-  - 삽입/삭제가 용이
+  - 삽입/삭제가 용이 (**항상 빠르다는 것이 아니라 삽입 삭제할 노드를 알고 있을 경우**)
+  ```cpp
+  	void Insert(Node* posNode, int data)
+	{
+		/**                [node]                  */
+		/** [dummy]	[prevN]		 [posNode]	[dummy]*/
+		/** [head]							[tail] */
+		Node* node = new Node(data);
+		Node* prevNode = posNode->prev;
+
+		prevNode->next = node;
+		node->prev = prevNode;
+		node->next = posNode;
+		posNode->prev = node;
+	}
+
+	Node* Remove(Node* node)
+	{
+		/**                [node]                  */
+		/** [dummy]	[prevN]		 [nextN]	[dummy]*/
+		/** [head]							[tail] */
+		Node* prevNode = node->prev;
+		Node* nextNode = node->next;
+
+		prevNode->next = nextNode;
+		nextNode->prev = prevNode;
+
+		delete node;
+
+		return nextNode;
+	}
+  ```
   - 동적 크기 조절 가능
 - **단점**: 
   - 임의 접근 불가
@@ -332,155 +366,169 @@ vector<string> Split(const string& Input, string Delimiter)
 	};
 	```
 	```cpp
-	void DoubleLinkedList::insertAtHead(int data)
+	class Node
 	{
-		Node* newNode = new Node();  // 새로운 노드 생성
-		newNode->data = data;        // 데이터 할당
+		using T = int;
+	public:
+		Node(T data)
+			: data(data), prev(nullptr), next(nullptr) {}
 
-		if (head == nullptr)
-		{       // 리스트가 비어 있을 경우
-			head = newNode;
-			tail = newNode;
-			newNode->prev = nullptr;
-			newNode->next = nullptr;
-		}
-		else
-		{
-			newNode->next = head;
-			head->prev = newNode;
-			newNode->prev = nullptr;
-			head = newNode;
-		}
-	}
+	public:
+		T data;
+		Node* prev;
+		Node* next;
+	};
 
-	void DoubleLinkedList::insertAtTail(int data)
+	class CaList
 	{
-		Node* newNode = new Node();  // 새로운 노드 생성
-		newNode->data = data;        // 데이터 할당
-
-		if (tail == nullptr)
-		{       // 리스트가 비어 있을 경우
-			head = newNode;
-			tail = newNode;
-			newNode->prev = nullptr;
-			newNode->next = nullptr;
-		}
-		else
+	public:
+		CaList()
 		{
-			newNode->prev = tail;
-			tail->next = newNode;
-			newNode->next = nullptr;
-			tail = newNode;
+			_head = new Node(0);
+			_tail = new Node(0);
+			_head->next = _tail;
+			_tail->prev = _head;
 		}
-	}
-	```
-	```cpp
-	void DoubleLinkedList::removeAtHead() {
-		if (head == nullptr) return;  // 리스트가 비어 있을 경우
-
-		if (head == tail)
-		{           // 리스트에 노드가 하나만 있을 경우
-			delete head;
-			head = nullptr;
-			tail = nullptr;
-		}
-		else
+		~CaList()
 		{
-			Node* temp = head;
-			head = head->next;
-			head->prev = nullptr;
-			delete temp;
-		}
-	}
-
-	void DoubleLinkedList::removeAtTail() {
-		if (tail == nullptr) return;  // 리스트가 비어 있을 경우
-
-		if (head == tail)
-		{           // 리스트에 노드가 하나만 있을 경우
-			delete tail;
-			head = nullptr;
-			tail = nullptr;
-		}
-		else
-		{
-			Node* temp = tail;
-			tail = tail->prev;
-			tail->next = nullptr;
-			delete temp;
-		}
-	}
-	void DoubleLinkedList::remove(int data)
-	{
-		if (head == nullptr) return;  // 리스트가 비어 있을 경우
-
-		if (head->data == data)
-		{     // 삭제할 노드가 head일 경우
-			removeAtHead();
-			return;
-		}
-
-		if (tail->data == data)
-		{     // 삭제할 노드가 tail일 경우
-			removeAtTail();
-			return;
-		}
-
-		Node* curr = head;
-		while (curr->next != nullptr)
-		{
-			if (curr->next->data == data)
+			Node* node = _head;
+			while (node)
 			{
-				Node * temp = curr->next;
-				curr->next = curr->next->next;
-				if (curr->next != nullptr)
-				{
-					curr->next->prev = curr;
-				}
-				else
-				{
-					tail = curr;
-				}
+				Node* temp = node;
+				node = node->next;
 				delete temp;
-				return;
 			}
-			curr = curr->next;
 		}
-	}
-	```
-	```cpp
-	bool DoubleLinkedList::search(int data)
-	{
-		Node* temp = head;
-		while (temp != nullptr)
-		{
-			if (temp->data == data) return true;
-			temp = temp->next;
-		}
-		return false;
-	}
-	```
-	```cpp
-	void DoubleLinkedList::displayForward()
-	{
-		Node* temp = head;
-		while (temp != nullptr)
-		{
-			std::cout << temp->data << " ";
-			temp = temp->next;
-		}
-		std::cout << std::endl;
-	}
 
-	void DoubleLinkedList::displayBackward()
-	{
-		Node* temp = tail;
-		while (temp != nullptr)
+		Node* GetNode(int index)
 		{
-			std::cout << temp->data << " ";
-			temp = temp->prev;
+			Node* node = _head->next;
+			if (node == _tail)
+			{
+				return nullptr;
+			}
+
+			for (int i = 0; i < index; i++)
+			{
+				if (node == _tail->prev)
+				{
+					return nullptr;
+				}
+
+				node = node->next;
+			}
+
+			return node;
 		}
-		std::cout << std::endl;
+
+		void Print()
+		{
+			Node* node = _head->next;
+			while (node != _tail)
+			{
+				std::cout << node->data << " ";
+				node = node->next;
+			}
+			std::cout << std::endl;
+		}
+
+		Node* AddAtHead(int data)
+		{
+			/** Without dummy pointer */
+			/** [head]	[node]	[temp]	[2]	[3]	[tail] */
+			//Node* node = new Node(data);
+			//if (!_head)
+			//{
+			//	_head = node;
+			//	_tail = node;
+			//}
+			//else
+			//{
+			//	Node* temp = _head;
+			//	node->next = temp;
+			//	temp->prev = node;
+			//	_head = node;
+			//}
+
+			/** With dummy pointer */
+			/** [dummy]	[node]	[temp]	[2]	[3]	[dummy] */
+			/** [head]							[tail]  */
+			Node* node = new Node(data);
+			Node* temp = _head->next;
+			
+			node->next = temp;
+			temp->prev = node;
+			_head->next = node;
+			node->prev = _head;
+
+			return node;
+		}
+
+		Node* AddAtTail(int data)
+		{
+			/** [dummy]	[1]	[2]	[temp]	[node]	[dummy] */
+			/** [head]							[tail]  */
+			Node* node = new Node(data);
+			Node* temp = _tail->prev;
+
+			temp->next = node;
+			node->prev = temp;
+			node->next = _tail;
+			_tail->prev = node;
+
+			return node;
+		}
+
+		void Insert(Node* posNode, int data)
+		{
+			/**                [node]                  */
+			/** [dummy]	[prevN]		 [posNode]	[dummy]*/
+			/** [head]							[tail] */
+			Node* node = new Node(data);
+			Node* prevNode = posNode->prev;
+
+			prevNode->next = node;
+			node->prev = prevNode;
+			node->next = posNode;
+			posNode->prev = node;
+		}
+
+		Node* Remove(Node* node)
+		{
+			/**                [node]                  */
+			/** [dummy]	[prevN]		 [nextN]	[dummy]*/
+			/** [head]							[tail] */
+			Node* prevNode = node->prev;
+			Node* nextNode = node->next;
+
+			prevNode->next = nextNode;
+			nextNode->prev = prevNode;
+
+			delete node;
+
+			return nextNode;
+		}
+
+	private:
+		Node* _head = nullptr;
+		Node* _tail = nullptr;
+	};
+
+	int main()
+	{
+		CaList list;
+		list.AddAtHead(1);
+		Node* temp1 = list.AddAtHead(2);
+		list.AddAtHead(3);
+
+		list.AddAtTail(4);
+		Node* temp2 = list.AddAtTail(5);
+		list.AddAtTail(6);
+
+		list.Insert(temp1, 7);
+		list.Remove(temp2);
+
+		list.Print();
 	}
 	```
 
