@@ -696,7 +696,7 @@ private:
   - 데이터 순서 보장
   - 동시성 처리에 유용
 - **단점**: 중간 데이터 접근 불가
-
+- 연결 리스트를 이용한 구현
 ```cpp
 #include <iostream>
 
@@ -741,6 +741,58 @@ int top()
 {
     return head->data;
 }
+```
+- 동적 배열을 이용한 구현 : [dynamic array](#dynamic-array) 이용
+```cpp
+/**
+ * empty : [front/back][][][][][].
+ * push : [front][back][][][][][].
+ */
+template<typename T>
+class CaQueue
+{
+public:
+	CaQueue()
+	{
+		_container.resize(100);
+	}
+
+	void push(const T& value)
+	{
+		// TODO : check if full
+		if (_size == _container.size())
+		{
+
+		}
+
+		_container[_back] = value;
+		_back = (_back + 1) % _container.size();	// circular
+		_size++;
+	}
+
+	void pop()
+	{
+		_front = (_front + 1) % _container.size();	// circular
+		_size--;
+	}
+
+	T& front()
+	{
+		return _container[_front];
+	}
+
+	bool empty()
+	{
+		return _size == 0;;
+	}
+
+private:
+	CaVector<T> _container;
+
+	int _front = 0;
+	int _back = 0;
+	int _size = 0;
+};
 ```
 
 ## Tree
