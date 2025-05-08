@@ -10,196 +10,7 @@
 - [Reference vs Copy](#reference-vs-copy)
 - [Type Casting](#Type-Casting)
 - [메모리](#메모리-관리)
-
----
-
-## **1. 구조체(Struct)와 클래스(Class)의 차이**
-### **기본 접근 제한 지정자**
-- **구조체(Struct)**:
-  - 기본 접근 제한자가 `public`입니다.
-  - 모든 멤버 변수와 함수는 외부에서 바로 접근 가능합니다.
-
-```cpp
-struct Person
-{
-    int Age;       // public
-    float Height;  // public
-};
-```
-
-- **클래스(Class)**:
-  - 기본 접근 제한자가 `private`입니다.
-  - 멤버 변수는 외부에서 바로 접근할 수 없으며, `public`으로 명시적으로 선언해야 접근 가능합니다.
-
-```cpp
-class Person
-{
-    int Age;       // private
-    float Height;  // private
-
-public:
-    char Name[26]; // public
-};
-```
-
-### **실무적 활용**
-- 구조체는 단순히 데이터를 묶어 관리할 때 사용합니다.
-- 클래스는 데이터와 기능(메서드)을 함께 캡슐화하여 객체 지향 프로그래밍(OOP)을 구현할 때 사용합니다.
-
-## **2. 멤버 함수(Member Function)**
-### **멤버 함수의 동작 원리**
-- 클래스 내부의 멤버 함수는 호출 시 자동으로 `this` 포인터를 전달받습니다.
-- `this` 포인터는 현재 객체의 주소를 가리키며, 이를 통해 객체의 멤버 변수에 접근합니다.
-
-```cpp
-class Person
-{
-public:
-    void AddAge()
-    {
-        this->Age++; // this 포인터를 통해 Age에 접근 (암시적)
-    }
-};
-```
-
-### **`this` 포인터의 특징**
-- `this`는 암묵적으로 전달되며, 현재 호출된 객체를 가리킵니다.
-- `const` 멤버 함수에서는 `this`가 읽기 전용(`const`)으로 전달됩니다.
-
-```cpp
-void PrintInfo() const
-{
-    // this->Age 수정 불가 (읽기 전용)
-}
-```
-
-## **3. 데이터 캡슐화와 접근 제한**
-### **캡슐화의 필요성**
-- 중요한 데이터(예: 게임 캐릭터의 이름, 계좌 정보 등)를 보호하기 위해 `private`로 설정하여 외부에서 직접 변경하지 못하도록 합니다.
-
-```cpp
-class BankAccount
-{
-private:
-    FString Owner;   // 외부에서 접근 불가
-    int32 Balance;
-
-public:
-    void Deposit(int32 Money)
-    {
-        Balance += Money;   // 안전한 자금 관리
-    }
-};
-```
-
-### **접근 제한 지정자 사용법**
-- `public`: 외부에서 자유롭게 접근 가능.
-- `private`: 외부에서 직접 접근 불가. 내부 함수로만 접근 가능.
-- `protected`: 상속받은 클래스에서만 접근 가능.
-
-## **4. 구조체와 클래스의 메모리 할당**
-
-### **구조체 메모리**
-- 구조체는 멤버 변수들이 순서대로 메모리에 배치됩니다.
-
-```cpp
-struct Person
-{
-    int Age;
-    float Height;
-    char Name[26];
-};
-```
-
-메모리 배치:
-```
-[Age][Height][Name[0]~Name[25]]
-```
-
-### **클래스 메모리**
-- 클래스도 구조체와 동일한 방식으로 메모리에 배치되지만, 접근 제한자는 런타임 동작에 영향을 미치지 않습니다.
-
-## **5. 함수 인자로 객체 전달하기**
-
-### **값 전달 방식**
-- 객체를 값으로 전달하면, 복사본이 생성되어 원본 데이터는 변경되지 않습니다.
-
-```cpp
-void ModifyPerson(Person P)
-{
-    P.Age = 30; // 복사본만 변경됨
-}
-```
-
-### **참조 전달 방식**
-- 참조나 포인터를 사용하면 원본 데이터를 직접 수정할 수 있습니다.
-
-```cpp
-void ModifyPerson(Person& P)
-{
-    P.Age = 30; // 원본이 변경됨
-}
-```
-
-포인터 사용 예:
-
-```cpp
-void ModifyPerson(Person* P)
-{
-    P->Age = 30; // 원본이 변경됨
-}
-```
-
-## **6. 클래스 내부의 멤버 함수 활용**
-
-#### **멤버 함수 구현**
-- 클래스 내부에 멤버 함수를 정의하면, 해당 객체의 데이터를 더 쉽게 관리할 수 있습니다.
-
-```cpp
-class Person
-{
-public:
-    void AddAge()
-    {
-        Age++;   // 나이를 증가시키는 함수
-    }
-};
-```
-
-### **객체별 동작 관리**
-- 각 객체는 독립적인 데이터를 가지며, 동일한 멤버 함수를 호출해도 각자의 데이터만 변경됩니다.
-
-```cpp
-Person John, Jane;
-John.AddAge(); // John의 나이만 증가
-Jane.AddAge(); // Jane의 나이만 증가
-```
-
-## **7. 디스 포인터(this Pointer)와 const**
-
-### **디스 포인터란?**
-- 디스 포인터(`this`)는 현재 호출된 객체의 주소를 가리키며, 멤버 함수 내부에서 암시적으로 사용됩니다.
-
-### **const 멤버 함수와 디스 포인터**
-- `const` 멤버 함수에서는 디스 포인터가 읽기 전용(`const`)으로 전달됩니다.
-
-```cpp
-void PrintInfo() const
-{
-    // this->Age 수정 불가 (읽기 전용)
-}
-```
-
-디스 포인터 선언 예제:
-
-```cpp
-Person* const this; // 디스 포인터는 상수 포인터로 선언됨 (주소 변경 불가)
-```
-
-## **8. 팁 및 주의사항**
-1. **캡슐화**: 중요한 데이터는 반드시 `private`로 설정하고, 필요한 경우에만 `getter/setter`를 제공합니다.
-2. **참조와 포인터**: 성능 최적화를 위해 큰 객체를 함수 인자로 전달할 때 참조 또는 포인터를 사용하는 것이 좋습니다.
-3. **코드 가독성**: 명확한 변수명과 주석을 통해 가독성을 높이고, 불필요한 복잡성을 줄입니다.
+- [Tips](#tips)
 
 ---
 
@@ -910,3 +721,199 @@ int main()
 - 참조 캡처 시 댕글링 레퍼런스 방지
 - 캡처된 변수의 메모리 관리
 - 람다 객체 크기 고려
+
+---
+
+## **Tips**
+
+- **캡슐화**: 중요한 데이터는 반드시 `private`로 설정하고, 필요한 경우에만 `getter/setter`를 제공합니다.
+- **참조와 포인터**: 성능 최적화를 위해 큰 객체를 함수 인자로 전달할 때 참조 또는 포인터를 사용하는 것이 좋습니다.
+- **코드 가독성**: 명확한 변수명과 주석을 통해 가독성을 높이고, 불필요한 복잡성을 줄입니다.
+
+### Precompiled Headers
+- "pch.h" 사용법
+    1. project -> properties -> C/C++ : Precompiled Headers -> Precompiled Header (Use), File (header filename (pch.h))
+    1. pch.cpp -> propoerties -> C/C++ : Precompiled Headers -> Precompiled Header (Create)
+
+## **1. 구조체(Struct)와 클래스(Class)의 차이**
+### **기본 접근 제한 지정자**
+- **구조체(Struct)**:
+  - 기본 접근 제한자가 `public`입니다.
+  - 모든 멤버 변수와 함수는 외부에서 바로 접근 가능합니다.
+
+```cpp
+struct Person
+{
+    int Age;       // public
+    float Height;  // public
+};
+```
+
+- **클래스(Class)**:
+  - 기본 접근 제한자가 `private`입니다.
+  - 멤버 변수는 외부에서 바로 접근할 수 없으며, `public`으로 명시적으로 선언해야 접근 가능합니다.
+
+```cpp
+class Person
+{
+    int Age;       // private
+    float Height;  // private
+
+public:
+    char Name[26]; // public
+};
+```
+
+### **실무적 활용**
+- 구조체는 단순히 데이터를 묶어 관리할 때 사용합니다.
+- 클래스는 데이터와 기능(메서드)을 함께 캡슐화하여 객체 지향 프로그래밍(OOP)을 구현할 때 사용합니다.
+
+## **2. 멤버 함수(Member Function)**
+### **멤버 함수의 동작 원리**
+- 클래스 내부의 멤버 함수는 호출 시 자동으로 `this` 포인터를 전달받습니다.
+- `this` 포인터는 현재 객체의 주소를 가리키며, 이를 통해 객체의 멤버 변수에 접근합니다.
+
+```cpp
+class Person
+{
+public:
+    void AddAge()
+    {
+        this->Age++; // this 포인터를 통해 Age에 접근 (암시적)
+    }
+};
+```
+
+### **`this` 포인터의 특징**
+- `this`는 암묵적으로 전달되며, 현재 호출된 객체를 가리킵니다.
+- `const` 멤버 함수에서는 `this`가 읽기 전용(`const`)으로 전달됩니다.
+
+```cpp
+void PrintInfo() const
+{
+    // this->Age 수정 불가 (읽기 전용)
+}
+```
+
+## **3. 데이터 캡슐화와 접근 제한**
+### **캡슐화의 필요성**
+- 중요한 데이터(예: 게임 캐릭터의 이름, 계좌 정보 등)를 보호하기 위해 `private`로 설정하여 외부에서 직접 변경하지 못하도록 합니다.
+
+```cpp
+class BankAccount
+{
+private:
+    FString Owner;   // 외부에서 접근 불가
+    int32 Balance;
+
+public:
+    void Deposit(int32 Money)
+    {
+        Balance += Money;   // 안전한 자금 관리
+    }
+};
+```
+
+### **접근 제한 지정자 사용법**
+- `public`: 외부에서 자유롭게 접근 가능.
+- `private`: 외부에서 직접 접근 불가. 내부 함수로만 접근 가능.
+- `protected`: 상속받은 클래스에서만 접근 가능.
+
+## **4. 구조체와 클래스의 메모리 할당**
+
+### **구조체 메모리**
+- 구조체는 멤버 변수들이 순서대로 메모리에 배치됩니다.
+
+```cpp
+struct Person
+{
+    int Age;
+    float Height;
+    char Name[26];
+};
+```
+
+메모리 배치:
+```
+[Age][Height][Name[0]~Name[25]]
+```
+
+### **클래스 메모리**
+- 클래스도 구조체와 동일한 방식으로 메모리에 배치되지만, 접근 제한자는 런타임 동작에 영향을 미치지 않습니다.
+
+## **5. 함수 인자로 객체 전달하기**
+
+### **값 전달 방식**
+- 객체를 값으로 전달하면, 복사본이 생성되어 원본 데이터는 변경되지 않습니다.
+
+```cpp
+void ModifyPerson(Person P)
+{
+    P.Age = 30; // 복사본만 변경됨
+}
+```
+
+### **참조 전달 방식**
+- 참조나 포인터를 사용하면 원본 데이터를 직접 수정할 수 있습니다.
+
+```cpp
+void ModifyPerson(Person& P)
+{
+    P.Age = 30; // 원본이 변경됨
+}
+```
+
+포인터 사용 예:
+
+```cpp
+void ModifyPerson(Person* P)
+{
+    P->Age = 30; // 원본이 변경됨
+}
+```
+
+## **6. 클래스 내부의 멤버 함수 활용**
+
+#### **멤버 함수 구현**
+- 클래스 내부에 멤버 함수를 정의하면, 해당 객체의 데이터를 더 쉽게 관리할 수 있습니다.
+
+```cpp
+class Person
+{
+public:
+    void AddAge()
+    {
+        Age++;   // 나이를 증가시키는 함수
+    }
+};
+```
+
+### **객체별 동작 관리**
+- 각 객체는 독립적인 데이터를 가지며, 동일한 멤버 함수를 호출해도 각자의 데이터만 변경됩니다.
+
+```cpp
+Person John, Jane;
+John.AddAge(); // John의 나이만 증가
+Jane.AddAge(); // Jane의 나이만 증가
+```
+
+## **7. 디스 포인터(this Pointer)와 const**
+
+### **디스 포인터란?**
+- 디스 포인터(`this`)는 현재 호출된 객체의 주소를 가리키며, 멤버 함수 내부에서 암시적으로 사용됩니다.
+
+### **const 멤버 함수와 디스 포인터**
+- `const` 멤버 함수에서는 디스 포인터가 읽기 전용(`const`)으로 전달됩니다.
+
+```cpp
+void PrintInfo() const
+{
+    // this->Age 수정 불가 (읽기 전용)
+}
+```
+
+디스 포인터 선언 예제:
+
+```cpp
+Person* const this; // 디스 포인터는 상수 포인터로 선언됨 (주소 변경 불가)
+```
