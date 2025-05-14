@@ -5,9 +5,8 @@
 > **May each drop of thought gather to form an ocean of wisdom!**
 
 This is a place where:
-- We share our thoughts
-- We exchange knowledge
-- We learn from each other
+- Share thoughts
+- Exchange knowledge
 
 Here, ideas flow freely and curiosity thrives.  
 Whether you're an expert or a beginner, your perspective is valuable.  
@@ -23,8 +22,6 @@ Remember, every interaction is an opportunity to:
 So, don't hesitate to contribute. Your unique experiences and viewpoints can spark inspiration in others. Let's create an environment of mutual respect and continuous learning.
 
 Happy sharing and discovering! :smile:
-
----
 
 ## :droplet:Drops
 - Computer Science
