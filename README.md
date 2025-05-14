@@ -28,9 +28,8 @@ Happy sharing and discovering! :smile:
 
 ## :droplet:Drops
 - Computer Science
-    - [Algorithm](./ComputerScience/Algorithm.md)
+    - [DataStructure & Algorithm](./ComputerScience/DataStructure.md)
     - [CS](./ComputerScience/ComputerScience.md)
-    - [DataStructure](./ComputerScience/DataStructure.md)
     - [OS](./ComputerScience/OS.md)
     
 - Languages
