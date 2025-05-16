@@ -974,6 +974,10 @@ public:
 };
 ```
 - Heap(complete binary tree)
+	- __parent__: (now - 1) / 2;
+	- __left__: 2 * now + 1;
+	- __right__: 2 * now + 2;
+- sample code
 ```cpp
 template<typename T, typename Predicate = std::less<T>>
 class CaPriorityQueue
@@ -981,14 +985,15 @@ class CaPriorityQueue
 public:
 	// O(log n) time complexity for push
 	void push(const T& value)
-	{
-		// heap structure is a complete binary tree
+	{	
 		_heap.push_back(value);
-
+		
+		// 맨 끝 노드부터 맞는 위치를 찾을 때까지
 		// Move up the last element until it is in the correct position
 		int now = static_cast<int>(_heap.size()) - 1;
 		while (now > 0)
 		{
+			// 부모노드와 비교
 			// compare with the parent node
 			int next = (now - 1) / 2;
 			//if (_heap[now] < _heap[next])
@@ -1000,6 +1005,7 @@ public:
 				break;
 			}
 
+			// 부모노드가 더 작다면 스왑
 			// if the current node is greater than the parent node,
 			// swap with the parent node
 			std::swap(_heap[now], _heap[next]);
@@ -1019,19 +1025,21 @@ public:
 			int left = 2 * now + 1;
 			int right = 2 * now + 2;
 
-			// Check if the left child exists
+			// 최하단 리프에 도달한 경우
 			if (left >= static_cast<int>(_heap.size()))
 			{
 				break;
 			}
 
 			int next = now;
+			// 왼쪽부터 비교해보자
 			// Check if the left child is greater than the current node
 			if (_heap[next] < _heap[left])
 			{
 				next = left;
 			}
 
+			// 두 노드 중 큰 값을 오른쪽과 비교
 			// Check if the right child exists and is greater than the current node
 			//if (right < static_cast<int>(_heap.size()) && _heap[next] < _heap[right])
 			//{
@@ -1042,6 +1050,7 @@ public:
 				next = right;
 			}
 
+			// 좌,우 모두 현재노드보다 작다면 바꿀필요가 없으므로 종료
 			// If the current node is greater than both children, break
 			if (next == now)
 			{
