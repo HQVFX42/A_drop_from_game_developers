@@ -1081,7 +1081,8 @@ private:
 
 ## Graph
 방문을 했는지 여부에 따라 전체 탐색을 진행  
-가중치가 다르면 Dijikstra, 목적지도 체크하면 A* (BFS -> Dijikstra -> A*)
+가중치가 다르면 Dijikstra, 목적지도 체크하면 A*  
+(BFS -> Dijikstra -> A*)
 - DFS
 ```cpp
 struct Vertex
@@ -1140,4 +1141,40 @@ void DFS(int here)
 ```
 - BFS
 ```cpp
+void BFS(int here)
+{
+	// 누구에 의해서 발견되었는지
+	std::vector<int> parent(7, -1);
+	// 시작점에서 얼마	나 떨어져 있는지
+	std::vector<int> dist(7, -1);
+
+	std::queue<int> q;
+	q.push(here);
+	discovered[here] = true;
+
+	parent[here] = here;
+	dist[here] = 0;
+
+	while (!q.empty())
+	{
+		here = q.front();
+		q.pop();
+
+		std::cout << "Visited: " << here << std::endl;
+		for (int i : adjList[here])
+		{
+			int there = i;
+			if (discovered[there])
+			{
+				continue;
+			}
+
+			q.push(there);
+			discovered[there] = true;
+
+			parent[there] = here;
+			dist[there] = dist[here] + 1;
+		}
+	}
+}
 ```
