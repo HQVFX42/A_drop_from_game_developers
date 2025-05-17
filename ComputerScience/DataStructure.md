@@ -1178,3 +1178,83 @@ void BFS(int here)
 	}
 }
 ```
+- Dijikstra
+```cpp
+struct VertexCost
+{
+	VertexCost(int cost, int vertex)
+		: cost(cost), vertex(vertex)
+	{
+	}
+
+	bool operator<(const VertexCost& other) const
+	{
+		return cost < other.cost;
+	}
+
+	bool operator>(const VertexCost& other) const
+	{
+		return cost > other.cost;
+	}
+
+	int cost;
+	int vertex;
+};
+
+void Dijikstra(int here)
+{
+	// 최소 경로를 찾기 위한 우선순위 큐
+	std::priority_queue<VertexCost, std::vector<VertexCost>, std::greater<VertexCost>> pq;
+	// 발견한 케이스 중 가장 작은 비용을 저장하기 위한 벡터
+	std::vector<int> best(vertices.size(), INT_MAX);
+	// 방문한 정점들을 저장하기 위한 벡터
+	std::vector<int> parent(vertices.size(), -1);
+
+	pq.push(VertexCost(0, here));
+	best[here] = 0;
+	parent[here] = here;
+
+	while (!pq.empty())
+	{
+		// 제일 좋은 후보 찾기
+		VertexCost vc = pq.top();
+		pq.pop();
+		
+		int cost = vc.cost;
+		here = vc.vertex;
+
+		// 더 짧은 경로를 찾았다면
+		if (best[here] < cost)
+		{
+			continue;
+		}
+		std::cout << "Vertex: " << here << std::endl;
+
+		for (int there = 0; there < vertices.size(); there++)
+		{
+			// 연결된 정점이 아니면 패스
+			if (adjList[here][there] == -1)
+			{
+				continue;
+			}
+
+			// 더 좋은 경로를 과거에 찾았으면 패스
+			int nextCost = best[here] + adjList[here][there];
+			if (nextCost >= best[there])
+			{
+				continue;
+			}
+
+			// 지금까지 찾은 경로중에서 최선 수치 갱신
+			best[there] = nextCost;
+			parent[there] = here;
+			pq.push(VertexCost(nextCost, there));
+		}
+	}
+}
+```
+
+## 탐색방법
+- vector: 순회
+- tree: 재귀
+- graph: DFS, BFS
