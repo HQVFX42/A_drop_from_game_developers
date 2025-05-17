@@ -1080,3 +1080,64 @@ private:
 ```
 
 ## Graph
+방문을 했는지 여부에 따라 전체 탐색을 진행  
+가중치가 다르면 Dijikstra, 목적지도 체크하면 A* (BFS -> Dijikstra -> A*)
+- DFS
+```cpp
+struct Vertex
+{
+	int data;
+};
+
+std::vector<Vertex> vertices;
+std::vector<std::vector<int>> adjList;
+std::vector<bool> visited;
+
+void CreateGraph()
+{
+	vertices.resize(7);
+
+	adjList = std::vector<std::vector<int>>(7);
+	adjList[0] = { 1, 3 };
+	adjList[1] = { 0, 2, 3 };
+	adjList[2] = { 1, 4 };
+	adjList[3] = { 0, 1 };
+	adjList[4] = { 2, 5 };
+	adjList[5] = { 4, 6 };
+	adjList[6] = { 5 };
+}
+
+void DFS(int here)
+{
+	visited[here] = true;
+	std::cout << "Visited: " << here << std::endl;
+
+	// 인접 리스트일 경우, 시간복잡도: O(V+E)
+	const int size = adjList[here].size();
+	for (int i = 0; i < size; i++)
+	{
+		int there = adjList[here][i];
+		if (!visited[there])
+		{
+			DFS(there);
+		}
+	}
+
+	// 인접 행렬일 경우, 시간복잡도: O(V^2)
+	//for (int there = 0; there < 6; there++)
+	//{
+	//	if (adjList[here][there] == 0)
+	//	{
+	//		continue;
+	//	}
+
+	//	if (!visited[there])
+	//	{
+	//		DFS(there);
+	//	}
+	//}
+}
+```
+- BFS
+```cpp
+```
