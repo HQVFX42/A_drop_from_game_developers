@@ -12,7 +12,7 @@
     - [스마트 포인터](#스마트-포인터)
 - [Reference vs Copy](#reference-vs-copy)
 - [Type Casting](#Type-Casting)
-- [STL]
+- [STL](#stl)
 	- [vector](#vector)
 	- [iterator](#iterator)
 - [메모리](#메모리-관리)
@@ -1051,7 +1051,9 @@ public:
 - begin()과 end() 함수로 범위 지정
 - 포인터와 유사한 방식으로 요소 접근
 
-# 메모리 관리
+---
+
+## 메모리 관리
 - NULL 크래쉬 : 빈도 매우 높음
 - 정수 오버플로우(언더플로우) : 빈도 매우 낮음
 - 메모리 누수 (0.1) : 빈도 낮음
