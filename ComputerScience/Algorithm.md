@@ -47,6 +47,26 @@ void OptimizedBubbleSort(int arr[], int n)
 - Time Complexity: O(log n)
 - Sample Code:
 ```cpp
+std::vector<int> v{0, 11, 22, 33, 44, 55, 66};
+
+int BinarySearch(int N)
+{
+	int left = 0;
+	int right = v.size() - 1;
+
+	while (left <= right)
+	{
+		int mid = (left + right) / 2;
+
+		if (n < v[mid]) { right = mid - 1; }
+		else if (n > v[mid] { left = mid + 1; }
+		else { return mid; }
+	}
+
+	return -1;
+}
+```
+```cpp
 int BinarySearch(int arr[], int n, int target)
 {
 	int left = 0;
