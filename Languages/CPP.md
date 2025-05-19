@@ -693,7 +693,55 @@ int main()
 	v2[0] = 100;	// 복사가 일어나므로 v의 값은 변경되지 않음
 	Print(v2);
 	std::cout << "------------------" << std::endl;
-}
+
+	//
+	int* a = &v[0];
+	int value = *a;
+	std::cout << value << std::endl;
+	a++;
+	std::cout << *a << std::endl;
+	a++;
+	std::cout << *a << std::endl;
+	std::cout << "------------------" << std::endl;
+
+	//
+	int* ptr = &v[0];
+	int* ptrEnd = &v[4] + 1;
+	while (ptr != ptrEnd)
+	{
+		std::cout << *ptr << std::endl;
+		ptr++;
+	}
+	std::cout << "------------------" << std::endl;
+
+	for (std::vector<int>::iterator it = v.begin(); it != v.end();)
+	{
+		std::cout << *it << std::endl;
+		it++;
+	}
+	std::cout << "------------------" << std::endl;
+
+	for (std::vector<int>::iterator it = v.begin(); it != v.end();)
+	{
+		if (*it % 2 == 0)
+		{
+			it = v.erase(it);
+		}
+		if (*it == 5)
+		{
+			it = v.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
+	for (std::vector<int>::iterator it = v.begin(); it != v.end();)
+	{
+		std::cout << *it << std::endl;
+		it++;
+	}
+}		
 ```
 ### list
 ```cpp
@@ -746,57 +794,61 @@ int main()
 ```
 ### iterator
 ```cpp
-int main()
+template<typename T>
+class Vector_Iterator
 {
-	std::vector<int> v{ 1,2,3,4,5 };
-	
-	int* a = &v[0];
-	int value = *a;
-	std::cout << value << std::endl;
-	a++;
-	std::cout << *a << std::endl;
-	a++;
-	std::cout << *a << std::endl;
-	std::cout << "------------------" << std::endl;
+public:
+	Vector_Iterator() : _ptr(nullptr) {}
+	Vector_Iterator(T* ptr) : _ptr(ptr) {}
 
-	//
-	int* ptr = &v[0];
-	int* ptrEnd = &v[4] + 1;
-	while (ptr != ptrEnd)
+	// 전위형++(++it)
+	Vector_Iterator& operator++()
 	{
-		std::cout << *ptr << std::endl;
-		ptr++;
+		_ptr++;
+		return *this;
 	}
-	std::cout << "------------------" << std::endl;
+	// 후위형++(it++)
+	Vector_Iterator& operator++(int)
+	{
+		Vector_Iterator temp = *this;
+		_ptr++;
+		return temp;
+	}
+	Vector_Iterator& operator+(const int count)
+	{
+		Vector_Iterator temp = *this;
+		temp._ptr += count;
+		return temp;
+	}
 
-	for (std::vector<int>::iterator it = v.begin(); it != v.end();)
+	bool operator==(const Vector_Iterator& other)
 	{
-		std::cout << *it << std::endl;
-		it++;
+		return _ptr == other._ptr;
 	}
-	std::cout << "------------------" << std::endl;
+	bool operator!=(const Vector_Iterator& other)
+	{
+		return _ptr != other._ptr;
+	}
 
-	for (std::vector<int>::iterator it = v.begin(); it != v.end();)
+	T& operator*()
 	{
-		if (*it % 2 == 0)
-		{
-			it = v.erase(it);
-		}
-		if (*it == 5)
-		{
-			it = v.erase(it);
-		}
-		else
-		{
-			it++;
-		}
+		return *_ptr;
 	}
-	for (std::vector<int>::iterator it = v.begin(); it != v.end();)
-	{
-		std::cout << *it << std::endl;
-		it++;
-	}
-}
+
+public:
+	T* _ptr = nullptr;
+};
+
+template<typename T>
+class CaVector
+{
+	//using T = Pos;
+
+public:
+	using iterator = Vector_Iterator<T>;
+
+	iterator begin() { return iterator(&_buffer[0]); }
+	iterator end() { return begin() + _size; }
 ```
 
 ### Reference vs Copy
