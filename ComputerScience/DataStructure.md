@@ -5,6 +5,9 @@
 	- [Stack](#stack), [Queue](#queue)
 - 비선형
 	- [Tree](#tree)
+		- [Heap]()
+		- [Binary Search Tree]()
+		- [Red-Black Tree]()
 	- [Graph](#graph)
 
 ## Array
@@ -1078,6 +1081,17 @@ private:
 	Predicate _predicate;
 };
 ```
+### Binary Search Tree
+왼쪽은 나보다 작은 것, 오른쪽은 나보다 큰 것으로 분류하는 트리
+- 이진탐색이 데이터 추가/삭제 시 정렬을 유지하기 위한 비용이 크다는 한계를 극복하기 위한 방식
+- 트리 높이에 의존적이므로 O(logN) 비용이 적다
+- 하지만 한쪽으로 데이터가 치우치는 불균형이 발생하면 연결리스트와 다름 없어질 수 있다
+
+### Red-Black Tree
+Root노드와 최하단 Leaf의 dummy(NIL)은 Black  
+연속해서 Red는 등장할 수 없다  
+어떤 노드로부터 하위 리프노드에 도달하는 모든 경로에는 같은 개수의 블랙노드를 만난다
+- 위 규칙을 통해 BST의 불균형을 균형이진트리로 만들어주는 것이 목적
 
 ## Graph
 방문을 했는지 여부에 따라 전체 탐색을 진행  
