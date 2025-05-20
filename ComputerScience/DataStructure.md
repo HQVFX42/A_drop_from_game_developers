@@ -1,13 +1,13 @@
-﻿# 자료구조와 알고리즘 핵심 개념
+﻿# 자료구조
 - 선형
 	- [Array](#array), [Dynamic Array](#dynamic-array)
 	- [Linked List](#linked-list)
 	- [Stack](#stack), [Queue](#queue)
 - 비선형
 	- [Tree](#tree)
-		- [Heap]()
-		- [Binary Search Tree]()
-		- [Red-Black Tree]()
+		- [Heap](#heapcomplete-binary-tree)
+		- [Binary Search Tree](#binary-search-tree)
+		- [Red-Black Tree](#red-black-tree)
 	- [Graph](#graph)
 
 ## Array
@@ -976,10 +976,11 @@ public:
 	}
 };
 ```
-- Heap(complete binary tree)
-	- __parent__: (now - 1) / 2;
-	- __left__: 2 * now + 1;
-	- __right__: 2 * now + 2;
+
+### Heap(complete binary tree)
+- __parent__: (now - 1) / 2;
+- __left__: 2 * now + 1;
+- __right__: 2 * now + 2;
 - sample code
 ```cpp
 template<typename T, typename Predicate = std::less<T>>
