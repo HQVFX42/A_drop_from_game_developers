@@ -3,6 +3,7 @@
 - [static](#static)
 - [interface](#interface)
 - [auto](#auto)
+- [lamda](#lamda)
 - [Class](#class)
     - [Constructor & Destructor](#constructor--destructor)
 - [동적할당](#동적할당)
@@ -245,6 +246,9 @@ int main()
 - **의도와는 다르게 값의 복사가 일어날 수 있다**
     - auto는 기본적으로 const나 참조자를 '벗겨내고' 타입을 추론한다
     - 따라서 원본 데이터를 수정하려 했으나 auto가 복사본을 만들게 되어 의도치 않은 동작이 발생할 수 있다: 참조자(`&`)나 const를 명시해야 함
+
+## lamda
+- 
 
 ## Class
 
