@@ -1053,7 +1053,7 @@ public:
 
 ### map
 
-### hash-map
+### hash_map(unordered_map)
 
 ---
 
